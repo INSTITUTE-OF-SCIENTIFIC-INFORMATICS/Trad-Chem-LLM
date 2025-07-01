@@ -1,0 +1,138 @@
+[
+    {
+        "product_name": "Kameshwari Rasayana",
+        "english_name": "Vitality Enhancement Tonic",
+        "description": "Traditional Ayurvedic medicine preparation known for enhancing vitality and immune function",
+        "benefits": [
+            "Enhances vitality",
+            "Boosts immunity",
+            "Improves overall health",
+            "Strengthens immune system"
+        ],
+        "diseases": [
+            "Weakness",
+            "Fatigue",
+            "Low immunity",
+            "General debility"
+        ],
+        "chemical_composition": {
+            "ingredients": {
+                "Cannabis": {
+                    "cannabigerolic acid": "CCCCCC1=CC(=C(C(=C1C(=O)O)O)C/C=C(\\C)/CCC=C(C)C)O",
+                    "cannabigerolic acid monomethylether": "CCCCCC1=CC(=C(C(=C1C(=O)O)O)C/C=C(\\C)/CCC=C(C)C)OC",
+                    "cannabigerol": "CCCCCC1=CC(=C(C(=C1)O)C/C=C(\\C)/CCC=C(C)C)O",
+                    "cannabigerol monomethylether": "CCCCCC1=CC(=C(C(=C1C(=O)O)O)C/C=C(\\C)/CCC=C(C)C)OC",
+                    "cannabigerovarinic acid": "CCCC1=CC(=C(C(=C1C(=O)O)O)CC=C(C)CCC=C(C)C)O",
+                    "cannabigerovarin": "CCCC1=CC(=C(C(=C1)O)C/C=C(\\C)/CCC=C(C)C)O"
+                },
+                "Bee Honey": {
+                    "Glucose": "C(C1C(C(C(C(O1)O)O)O)O)O",
+                    "Fructose": "C(C(C(C(C(=O)CO)O)O)O)O"
+                },
+                "Ghee": {
+                    "Butyric Acid": "CCCC(=O)O",
+                    "Palmitic Acid": "CCCCCCCCCCCCCCCC(=O)O"
+                }
+            }
+        },
+        "traditional_system": "Ayurveda",
+        "geographic_origin": "South Asia",
+        "source": "Traditional Ayurvedic texts",
+        "date_added": "2024-01-01T00:00:00.000000",
+        "entry_id": "TC_000001"
+    },
+    {
+        "product_name": "Ginseng Root Extract",
+        "english_name": "American Ginseng Root Extract",
+        "description": "Standardized extract from Panax quinquefolius root used for energy and cognitive enhancement",
+        "benefits": [
+            "Energy enhancement",
+            "Cognitive improvement",
+            "Stress reduction",
+            "Immune support"
+        ],
+        "diseases": [
+            "Mental fatigue",
+            "Physical exhaustion",
+            "Cognitive decline",
+            "Stress disorders"
+        ],
+        "chemical_composition": {
+            "ingredients": {
+                "Ginseng Root": {
+                    "ginsenoside_rb1": "CC(C)(C1CCC2(C(C1)CC(C3(C2CCC4(C3(CCC(C4(C)C)O)C)C)C)O)C)C(=O)O",
+                    "ginsenoside_rg1": "CC(C)(C1CCC2(C(C1)CCC3(C2CC(C4(C3CCC(C4(C)C)O)C)O)C)C)CO"
+                }
+            }
+        },
+        "traditional_system": "Traditional Chinese Medicine",
+        "geographic_origin": "North America",
+        "source": "Clinical research studies",
+        "date_added": "2024-01-01T00:00:00.000000",
+        "entry_id": "TC_000002"
+    },
+    {
+        "product_name": "Turmeric Curcumin Complex",
+        "english_name": "Turmeric Curcumin Anti-inflammatory Complex",
+        "description": "Standardized turmeric extract with enhanced bioavailability for anti-inflammatory benefits",
+        "benefits": [
+            "Anti-inflammatory effects",
+            "Antioxidant protection",
+            "Joint health support",
+            "Digestive health"
+        ],
+        "diseases": [
+            "Arthritis",
+            "Inflammatory conditions",
+            "Joint pain",
+            "Digestive disorders"
+        ],
+        "chemical_composition": {
+            "ingredients": {
+                "Turmeric Root": {
+                    "curcumin": "COC1=C(C=CC(=C1)C=CC(=O)CC(=O)C=CC2=CC(=C(C=C2)O)OC)O",
+                    "demethoxycurcumin": "COC1=CC(=CC=C1O)C=CC(=O)CC(=O)C=CC2=CC=C(C=C2)O",
+                    "bisdemethoxycurcumin": "C1=CC(=CC=C1C=CC(=O)CC(=O)C=CC2=CC=C(C=C2)O)O"
+                }
+            }
+        },
+        "traditional_system": "Ayurveda",
+        "geographic_origin": "India",
+        "source": "Modern extraction and standardization",
+        "date_added": "2024-01-01T00:00:00.000000",
+        "entry_id": "TC_000003"
+    },
+    {
+        "product_name": "Ashwagandha Root Extract",
+        "english_name": "Winter Cherry Adaptogenic Extract",
+        "description": "Standardized Withania somnifera root extract used for stress management and adaptogenic benefits",
+        "benefits": [
+            "Stress reduction",
+            "Anxiety relief",
+            "Energy enhancement",
+            "Sleep quality improvement",
+            "Cognitive function support"
+        ],
+        "diseases": [
+            "Chronic stress",
+            "Anxiety disorders",
+            "Insomnia",
+            "Mental fatigue",
+            "Adrenal exhaustion"
+        ],
+        "chemical_composition": {
+            "ingredients": {
+                "Ashwagandha Root": {
+                    "withanoside_d": "CC(C)(C1CCC2(C(C1)CCC3(C2CC(C4(C3CCC(C4(C)C)O)C)O)C)C)CO",
+                    "withanolide_a": "CC1=CC(=O)C2C(C1)CCC3(C2CC(C4(C3CCC(C4(C)C)O)C)O)C",
+                    "withanoside_vi": "CC(C)(C1CCC2(C(C1)CCC3(C2CCC4(C3(CCC(C4(C)C)O)C)C)C)C)C(=O)O"
+                }
+            }
+        },
+        "traditional_system": "Ayurveda",
+        "geographic_origin": "India",
+        "source": "Traditional Ayurvedic pharmacopoeia",
+        "date_added": "2024-01-01T00:00:00.000000",
+        "entry_id": "TC_000004"
+    }
+]

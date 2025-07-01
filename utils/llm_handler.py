@@ -27,12 +27,13 @@ class LLMHandler:
     def setup_client(self):
         """Setup Gemini client if API key is available"""
         try:
-            if Config.GEMINI_API_KEY:
-                genai.configure(api_key=Config.GEMINI_API_KEY)
+            api_key = Config.get_gemini_api_key()
+            if api_key:
+                genai.configure(api_key=api_key)
                 self.model = genai.GenerativeModel(Config.DEFAULT_MODEL)
                 st.success("✅ Gemini Flash API connected successfully")
             else:
-                st.warning("⚠️ Gemini API key not configured. Please set your API key in the .env file.")
+                st.warning("⚠️ Gemini API key not configured. Please set GEMINI_API_KEY in Streamlit secrets.")
         except Exception as e:
             st.error(f"❌ Error setting up Gemini API: {str(e)}")
     
@@ -126,7 +127,7 @@ class LLMHandler:
     
     def is_available(self):
         """Check if Gemini service is available"""
-        return self.model is not None and Config.GEMINI_API_KEY
+        return self.model is not None and Config.get_gemini_api_key()
     
     def get_tradchem_status(self):
         """Get TradChem integration status"""

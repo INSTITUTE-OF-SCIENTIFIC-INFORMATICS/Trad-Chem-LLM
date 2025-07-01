@@ -4,9 +4,8 @@ from datetime import datetime
 import json
 from utils.llm_handler import LLMHandler
 from config import Config
-from chemical_data_config import CHEMICAL_PACKAGE_NAME, CHEMICAL_REPO_URL
 
-# @author Anu Gamage
+# @author SaltyHeart
 # Page configuration for the Trad-Chem LLM chatbot
 st.set_page_config(
     page_title="Trad-Chem LLM",
@@ -121,7 +120,7 @@ with st.sidebar:
         st.success("✅ Gemini Connected")
     else:
         st.error("❌ Not Connected")
-        st.info("Please configure your Gemini API key in the .env file")
+        st.info("Please configure your Gemini API key in Streamlit secrets")
     
     st.markdown("---")
     
@@ -200,9 +199,11 @@ if prompt := st.chat_input("Ask your chemistry question here..."):
                 temperature=st.session_state.model_config['temperature'],
                 max_tokens=st.session_state.model_config['max_tokens']
             )
-        
-        st.markdown(response)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+            
+            st.markdown(response)
+    
+    # Add assistant response to chat history
+    st.session_state.messages.append({"role": "assistant", "content": response})
 
 # Footer
 st.markdown("---")
