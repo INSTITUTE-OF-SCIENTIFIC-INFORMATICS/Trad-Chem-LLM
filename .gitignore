@@ -1,5 +1,6 @@
-# @author SaltyHeart
-# Trad-Chem LLM .gitignore
+# @author Anu Gamage
+# LinkedIn: https://www.linkedin.com/in/anu-gamage-62192b201/
+# Gitignore for Trad-Chem LLM project
 
 # Environment variables and secrets
 .env

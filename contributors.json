@@ -1,0 +1,109 @@
+{
+  "project_info": {
+    "name": "Trad-Chem LLM",
+    "description": "Traditional Chemistry Large Language Model Assistant",
+    "version": "1.0.0",
+    "organization": "Institute of Scientific Informatics, Sri Lanka",
+    "repository": "https://github.com/INSTITUTE-OF-SCIENTIFIC-INFORMATICS/Trad-Chem-LLM",
+    "license": "MIT"
+  },
+  "lead_developer": {
+    "name": "Anu Gamage",
+    "role": "Lead Developer & Project Maintainer",
+    "linkedin": "https://www.linkedin.com/in/anu-gamage-62192b201/",
+    "github": "",
+    "email": "",
+    "contributions": [
+      "Project architecture and design",
+      "Streamlit application development",
+      "Google Gemini AI integration",
+      "TradChem database integration",
+      "UI/UX design and implementation",
+      "Deployment optimization"
+    ],
+    "bio": "Lead developer specializing in AI applications for traditional medicine and chemistry."
+  },
+  "core_contributors": [
+    {
+      "name": "TradChem Community",
+      "role": "Database Contributors & Research Team",
+      "organization": "Institute of Scientific Informatics, Sri Lanka",
+      "team_members": [
+        {
+          "name": "Kalana Kotawalagedara",
+          "role": "Senior Open Source Research Scientist",
+          "highlighted": true
+        },
+        {
+          "name": "Ashan Sathsara",
+          "role": "Senior Open Source Research Scientist",
+          "highlighted": true
+        },
+        {
+          "name": "Sakeer MR",
+          "role": "Senior Open Source Research Scientist",
+          "highlighted": true
+        },
+        {
+          "name": "Sachini Primali",
+          "role": "Senior Open Source Research Scientist",
+          "highlighted": true
+        },
+        {
+          "name": "Dharani Ariyasinghe",
+          "role": "Junior Open Source Research Scientist",
+          "highlighted": true
+        },
+        {
+          "name": "Manura Pamuditha",
+          "role": "Junior Open Source Research Scientist",
+          "highlighted": true
+        }
+      ],
+      "contributions": [
+        "Traditional medicine database compilation",
+        "Chemical structure data (SMILES notations)",
+        "Traditional system documentation",
+        "Geographic and cultural context data",
+        "Data validation and quality assurance",
+        "Research methodology development"
+      ],
+      "bio": "Dedicated team of researchers and developers working to preserve and digitize traditional medicine knowledge for the global scientific community."
+    }
+  ],
+  "acknowledgments": [
+    {
+      "name": "Institute of Scientific Informatics",
+      "role": "Institutional Support",
+      "location": "Sri Lanka",
+      "contribution": "Research infrastructure and database hosting"
+    },
+    {
+      "name": "Google Gemini Team",
+      "role": "AI Technology Provider",
+      "contribution": "Advanced language model capabilities"
+    },
+    {
+      "name": "Streamlit Team",
+      "role": "Platform Provider",
+      "contribution": "Web application framework and cloud hosting"
+    }
+  ],
+  "special_thanks": [
+    {
+      "name": "Traditional Medicine Practitioners",
+      "contribution": "Knowledge preservation and validation"
+    },
+    {
+      "name": "Open Source Community",
+      "contribution": "Libraries, tools, and collaborative development"
+    }
+  ],
+  "how_to_contribute": {
+    "database_contributions": "Add new traditional medicine entries to tradchem_database.json",
+    "code_contributions": "Submit pull requests for new features or bug fixes",
+    "documentation": "Improve guides, examples, and API documentation",
+    "testing": "Report bugs and test new features",
+    "contact": "Reach out to Anu Gamage via LinkedIn for collaboration opportunities"
+  }
+} 

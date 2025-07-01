@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 import json
 from utils.llm_handler import LLMHandler
+from utils.contributors_handler import contributors_handler
 from config import Config
 
 # @author Anu Gamage
@@ -68,6 +69,7 @@ if 'model_config' not in st.session_state:
 with st.sidebar:
     st.title("🧪 Trad-Chem LLM")
     st.markdown(f"**Version:** {Config.APP_VERSION}")
+    st.markdown("**Developed and maintained by Anu Gamage and Trad-Chem Community [Institute of Scientific Informatics, Sri Lanka]**")
     st.markdown("---")
     
     # Model settings
@@ -169,11 +171,85 @@ with st.sidebar:
         else:
             st.warning("⚠️ TradChem not found")
             st.write("Ensure Trad-Chem directory is present in project root")
+    
+    # Contributors section
+    with st.expander("👥 Contributors & Credits"):
+        contributors_data = contributors_handler.get_all_contributors()
+        
+        # Lead Developer
+        lead_dev = contributors_data.get('lead_developer', {})
+        if lead_dev:
+            st.markdown("### 🚀 Lead Developer")
+            st.markdown(f"**{lead_dev.get('name', 'Unknown')}**")
+            st.markdown(f"*{lead_dev.get('role', 'Developer')}*")
+            if lead_dev.get('linkedin'):
+                st.markdown(f"[LinkedIn Profile]({lead_dev['linkedin']})")
+            if lead_dev.get('bio'):
+                st.write(lead_dev['bio'])
+            
+            if lead_dev.get('contributions'):
+                st.markdown("**Key Contributions:**")
+                for contribution in lead_dev['contributions'][:3]:  # Show first 3
+                    st.write(f"• {contribution}")
+        
+        # Core Contributors
+        core_contributors = contributors_data.get('core_contributors', [])
+        if core_contributors:
+            st.markdown("### 🏛️ Core Contributors")
+            for contributor in core_contributors:
+                st.markdown(f"**{contributor.get('name', 'Unknown')}**")
+                st.markdown(f"*{contributor.get('role', 'Contributor')}*")
+                if contributor.get('organization'):
+                    st.write(f"📍 {contributor['organization']}")
+                if contributor.get('bio'):
+                    st.write(contributor['bio'])
+                
+                # Display team members if available
+                team_members = contributor.get('team_members', [])
+                if team_members:
+                    st.markdown("**🌟 Team Members:**")
+                    for member in team_members:
+                        member_name = member.get('name', 'Unknown')
+                        member_role = member.get('role', 'Contributor')
+                        if member.get('highlighted', False):
+                            # Highlight important team members
+                            st.markdown(f"⭐ **{member_name}** - *{member_role}*")
+                        else:
+                            st.markdown(f"• **{member_name}** - *{member_role}*")
+                st.markdown("")
+        
+        # Acknowledgments
+        acknowledgments = contributors_data.get('acknowledgments', [])
+        if acknowledgments:
+            st.markdown("### 🙏 Special Acknowledgments")
+            for ack in acknowledgments:
+                st.write(f"**{ack.get('name', 'Unknown')}** - {ack.get('contribution', 'Support')}")
+        
+        # How to Contribute
+        contrib_guide = contributors_data.get('how_to_contribute', {})
+        if contrib_guide:
+            st.markdown("### 🤝 How to Contribute")
+            st.write("We welcome contributions! Ways to get involved:")
+            for key, value in contrib_guide.items():
+                if key != 'contact':
+                    st.write(f"• **{key.replace('_', ' ').title()}**: {value}")
+            
+            if contrib_guide.get('contact'):
+                st.info(f"💬 Contact: {contrib_guide['contact']}")
+        
+        # Project Info
+        project_info = contributors_data.get('project_info', {})
+        if project_info:
+            st.markdown("### 📄 Project Information")
+            st.write(f"**Organization**: {project_info.get('organization', 'N/A')}")
+            st.write(f"**License**: {project_info.get('license', 'N/A')}")
+            if project_info.get('repository'):
+                st.markdown(f"[View on GitHub]({project_info['repository']})")
 
 # Main interface
 st.title("🧪 Trad-Chem LLM")
 st.markdown("### Traditional Chemistry Large Language Model Assistant")
-st.markdown("Ask questions about organic chemistry, inorganic chemistry, physical chemistry, analytical chemistry, and biochemistry.")
+st.markdown("Ask questions about product name, benefits, diseases, chemical composition and SMILES notations for plant species commonly employed in traditional medicinal practices.")
 
 # Display chat history
 for message in st.session_state.messages:

@@ -1,9 +1,16 @@
+#!/usr/bin/env python3
+"""
+TradChem Handler for Trad-Chem LLM
+Handles TradChem database integration and provides enhanced fallback data
+
+@author Anu Gamage
+LinkedIn: https://www.linkedin.com/in/anu-gamage-62192b201/
+"""
+
 import sys
 import os
 from typing import Dict, List, Optional
 import streamlit as st
-
-# @author SaltyHeart
 
 class TradChemHandler:
     """Robust handler for integrating TradChem database with LLM chatbot"""
