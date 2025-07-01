@@ -1,7 +1,8 @@
 import os
 import streamlit as st
 
-# @author SaltyHeart
+# @author Anu Gamage
+# LinkedIn: https://www.linkedin.com/in/anu-gamage-62192b201/
 # Configuration optimized for Streamlit Community Cloud deployment
 
 class Config:

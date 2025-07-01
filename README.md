@@ -1,6 +1,7 @@
 # 🧪 Trad-Chem LLM - Traditional Chemistry & Medicine AI Assistant
 
-**@author SaltyHeart**
+**@author Anu Gamage**  
+**LinkedIn:** [https://www.linkedin.com/in/anu-gamage-62192b201/](https://www.linkedin.com/in/anu-gamage-62192b201/)
 
 A specialized AI chatbot powered by Google Gemini Flash and integrated with the comprehensive TradChem database for traditional medicine and chemical knowledge.
 
@@ -210,4 +211,4 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) for deta
 
 ---
 
-🧪 **Built with ❤️ for Traditional Medicine & Modern Chemistry** | @author SaltyHeart 
+🧪 **Built with ❤️ for Traditional Medicine & Modern Chemistry** | @author Anu Gamage 

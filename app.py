@@ -5,7 +5,8 @@ import json
 from utils.llm_handler import LLMHandler
 from config import Config
 
-# @author SaltyHeart
+# @author Anu Gamage
+# LinkedIn: https://www.linkedin.com/in/anu-gamage-62192b201/
 # Page configuration for the Trad-Chem LLM chatbot
 st.set_page_config(
     page_title="Trad-Chem LLM",

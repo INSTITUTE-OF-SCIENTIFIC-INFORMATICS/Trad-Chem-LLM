@@ -4,6 +4,7 @@ from config import Config
 from .clean_tradchem_handler import CleanTradChemHandler as TradChemHandler
 
 # @author Anu Gamage
+# LinkedIn: https://www.linkedin.com/in/anu-gamage-62192b201/
 
 class LLMHandler:
     """Handler for Large Language Model API interactions using Google Gemini Flash with TradChem integration"""

@@ -1,6 +1,7 @@
 # 🚀 Streamlit Community Cloud Deployment Guide
 
-**@author SaltyHeart**
+**@author Anu Gamage**  
+**LinkedIn:** [https://www.linkedin.com/in/anu-gamage-62192b201/](https://www.linkedin.com/in/anu-gamage-62192b201/)
 
 Complete guide for deploying Trad-Chem LLM to Streamlit Community Cloud.
 

@@ -1,6 +1,9 @@
-# TradChem-LLM Integration Documentation
+# 🧪 TradChem Integration Documentation
 
-**@author SaltyHeart**
+**@author Anu Gamage**  
+**LinkedIn:** [https://www.linkedin.com/in/anu-gamage-62192b201/](https://www.linkedin.com/in/anu-gamage-62192b201/)
+
+Comprehensive documentation for TradChem database integration with the LLM chatbot.
 
 ## 🎯 Overview
 

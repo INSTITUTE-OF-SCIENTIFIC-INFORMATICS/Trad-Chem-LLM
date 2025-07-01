@@ -1,40 +1,47 @@
+#!/usr/bin/env python3
+"""
+Test setup for Trad-Chem LLM
+Verifies all components are properly configured
+
+@author Anu Gamage
+LinkedIn: https://www.linkedin.com/in/anu-gamage-62192b201/
+"""
+
+import os
 import sys
 
-print("🧪 Trad-Chem LLM Setup Test")
-print("=" * 40)
+def test_dependencies():
+    """Test if all required dependencies are installed"""
+    print("🧪 Testing Dependencies...")
+    
+    required_packages = [
+        'streamlit',
+        'google.generativeai',
+        'requests',
+        'pandas',
+        'numpy',
+        'jsonschema'
+    ]
+    
+    for package in required_packages:
+        try:
+            __import__(package)
+            print(f"✅ {package}")
+        except ImportError:
+            print(f"❌ {package} - Missing")
+            return False
+    
+    return True
 
-# Test imports
-try:
-    import streamlit
-    print("✅ Streamlit OK")
-except:
-    print("❌ Streamlit failed")
-
-try:
-    import google.generativeai
-    print("✅ Gemini API OK")
-except:
-    print("❌ Gemini API failed")
-
-try:
-    from config import Config
-    print("✅ Config OK")
-except:
-    print("❌ Config failed")
-
-try:
-    from utils.llm_handler import LLMHandler
-    print("✅ LLM Handler OK")
-except:
-    print("❌ LLM Handler failed")
-
-try:
-    from tradchem import TradChem
-    print("✅ TradChem Package OK")
-except:
-    print("⚠️ TradChem not installed (optional)")
-
-print("\n🧪 TradChem Integration:")
-print("Repository: https://github.com/INSTITUTE-OF-SCIENTIFIC-INFORMATICS/Trad-Chem.git")
-print("Install with: pip install git+https://github.com/INSTITUTE-OF-SCIENTIFIC-INFORMATICS/Trad-Chem.git")
-print("\n🚀 Ready to run: python run.py") 
+if __name__ == "__main__":
+    print("🚀 Trad-Chem LLM Setup Test")
+    print("=" * 40)
+    
+    success = test_dependencies()
+    
+    if success:
+        print("\n🎉 All tests passed! Your setup is ready.")
+    else:
+        print("\n💥 Some tests failed. Please install missing dependencies.")
+    
+    sys.exit(0 if success else 1) 

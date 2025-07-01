@@ -3,7 +3,8 @@
 Chemical Data Handler for TradChem LLM Integration
 Handles traditional medicine database operations using direct JSON access
 
-@author SaltyHeart
+@author Anu Gamage
+LinkedIn: https://www.linkedin.com/in/anu-gamage-62192b201/
 """
 
 import json

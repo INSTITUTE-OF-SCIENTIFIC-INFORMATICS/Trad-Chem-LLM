@@ -1,6 +1,7 @@
 # 🧪 Trad-Chem LLM Complete Setup Guide
 
-**@author SaltyHeart**
+**@author Anu Gamage**  
+**LinkedIn:** [https://www.linkedin.com/in/anu-gamage-62192b201/](https://www.linkedin.com/in/anu-gamage-62192b201/)
 
 Your Trad-Chem LLM is now fully integrated with the [TradChem Database](https://github.com/INSTITUTE-OF-SCIENTIFIC-INFORMATICS/Trad-Chem.git) and powered by Google Gemini Flash!
 
@@ -184,4 +185,4 @@ Start chatting about traditional chemistry, plant medicines, chemical structures
 
 ---
 
-🧪 **Trad-Chem LLM** | Powered by TradChem Database & Google Gemini Flash | @author SaltyHeart
+🧪 **Trad-Chem LLM** | Powered by TradChem Database & Google Gemini Flash | @author Anu Gamage

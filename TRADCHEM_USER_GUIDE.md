@@ -1,6 +1,7 @@
 # 🌿 TradChem Database User Guide
 
-**@author Anu Gamage**
+**@author Anu Gamage**  
+**LinkedIn:** [https://www.linkedin.com/in/anu-gamage-62192b201/](https://www.linkedin.com/in/anu-gamage-62192b201/)
 
 ## ✅ 问题已解决！TradChem 数据库现在完全可用
 
