@@ -6,7 +6,7 @@ from utils.llm_handler import LLMHandler
 from config import Config
 from chemical_data_config import CHEMICAL_PACKAGE_NAME, CHEMICAL_REPO_URL
 
-# @author SaltyHeart
+# @author Anu Gamage
 # Page configuration for the Trad-Chem LLM chatbot
 st.set_page_config(
     page_title="Trad-Chem LLM",
@@ -49,12 +49,9 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize LLM handler with chemical data integration
+# Initialize LLM handler with TradChem integration
 if 'llm_handler' not in st.session_state:
-    st.session_state.llm_handler = LLMHandler(
-        chemical_repo_url=CHEMICAL_REPO_URL,
-        chemical_package_name=CHEMICAL_PACKAGE_NAME
-    )
+    st.session_state.llm_handler = LLMHandler()
 
 # Initialize chat history
 if 'messages' not in st.session_state:
@@ -128,41 +125,50 @@ with st.sidebar:
     
     st.markdown("---")
     
-    # Chemical Data Status
-    st.subheader("🧪 Chemical Database")
-    chemical_handler = st.session_state.llm_handler.chemical_handler
+    # TradChem Database Status
+    st.subheader("🌿 TradChem Database")
+    tradchem_status = st.session_state.llm_handler.get_tradchem_status()
     
-    if chemical_handler.is_loaded:
-        st.success("✅ Chemical Data Loaded")
-        plants_count = len(chemical_handler.data_cache.get('plants', {}))
-        compounds_count = len(chemical_handler.data_cache.get('compounds', {}))
-        st.info(f"📊 {plants_count} plants, {compounds_count} compounds")
+    if tradchem_status['available']:
+        st.success("✅ TradChem Connected")
+        if tradchem_status['loaded']:
+            stats = tradchem_status['stats']
+            st.info(f"📊 {stats.get('total_medicines', 0)} medicines")
+            st.info(f"🏛️ {len(stats.get('traditional_systems', []))} traditional systems")
+        else:
+            if st.button("🔄 Load TradChem Database"):
+                with st.spinner("Loading TradChem database..."):
+                    success = st.session_state.llm_handler.tradchem_handler.load_database()
+                    if success:
+                        st.rerun()
     else:
-        st.warning("⚠️ Using Sample Data")
-        if st.button("🔄 Load Chemical Data"):
-            with st.spinner("Loading chemical database..."):
-                success = chemical_handler.load_chemical_data()
-                if success:
-                    st.rerun()
+        st.warning("⚠️ TradChem Not Available")
+        st.info("Using enhanced sample data")
     
-    # Data integration info
-    with st.expander("📖 Chemical Data Integration"):
+    # TradChem integration info
+    with st.expander("📖 TradChem Integration"):
         st.markdown("""
-        **To integrate your chemical repository:**
+        **TradChem Database Integration:**
         
-        1. Edit `chemical_data_config.py`
-        2. Set your package name or repository URL
-        3. Restart the application
+        The chatbot integrates with the comprehensive TradChem database containing:
+        - Traditional medicine data from multiple systems
+        - Chemical compositions with SMILES notations
+        - Benefits and disease treatment information
+        - Geographic and cultural context
         
-        **Current Configuration:**
+        **Status:**
         """)
         
-        if CHEMICAL_PACKAGE_NAME:
-            st.code(f"Package: {CHEMICAL_PACKAGE_NAME}")
-        elif CHEMICAL_REPO_URL:
-            st.code(f"Repository: {CHEMICAL_REPO_URL}")
+        if tradchem_status['available']:
+            st.success("✅ TradChem database connected")
+            stats = tradchem_status['stats']
+            if stats:
+                st.write(f"**Medicines:** {stats.get('total_medicines', 'N/A')}")
+                st.write(f"**Systems:** {', '.join(stats.get('traditional_systems', [])[:3])}")
+                st.write(f"**Regions:** {', '.join(stats.get('geographic_regions', [])[:3])}")
         else:
-            st.code("Using sample data")
+            st.warning("⚠️ TradChem not found")
+            st.write("Ensure Trad-Chem directory is present in project root")
 
 # Main interface
 st.title("🧪 Trad-Chem LLM")
@@ -202,7 +208,7 @@ if prompt := st.chat_input("Ask your chemistry question here..."):
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666; padding: 20px;'>
-    <p>🧪 Trad-Chem LLM | @author SaltyHeart</p>
+    <p>🧪 Trad-Chem LLM | @author Anu Gamage</p>
     <p>Specialized AI Assistant for Traditional Chemistry</p>
 </div>
 """, unsafe_allow_html=True)

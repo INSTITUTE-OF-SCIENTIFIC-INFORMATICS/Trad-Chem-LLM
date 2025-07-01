@@ -1,281 +1,257 @@
-# 🧪 Trad-Chem LLM
+# 🧪 Trad-Chem LLM - Traditional Chemistry Large Language Model
 
-Traditional Chemistry Large Language Model Chatbot
+**@author Anu Gamage**
 
-**@author SaltyHeart**
+A sophisticated AI chatbot powered by Google Gemini Flash and integrated with the comprehensive TradChem traditional medicine database.
 
-## 📖 Description
+## 🎯 Project Overview
 
-Trad-Chem LLM is a specialized AI chatbot designed for traditional chemistry education and research. It provides expert-level assistance in organic chemistry, inorganic chemistry, physical chemistry, analytical chemistry, and biochemistry.
+**Trad-Chem LLM** is an advanced AI assistant specialized in traditional chemistry and medicinal plants. It combines the power of Google's Gemini Flash API with real traditional medicine data to provide accurate, evidence-based responses about:
 
-## ✨ Features
+- **Traditional Medicinal Plants** and their chemical compositions
+- **SMILES Notations** and molecular structures
+- **Plant-based Therapeutic Compounds** and their benefits
+- **Chemical Analysis** of natural products
+- **Traditional Medicine Systems** (Ayurveda, TCM, etc.)
 
-- 🎯 Specialized chemistry knowledge base with traditional medicine focus
-- 🧪 **Integrated Chemical Database** - Connect your own chemical data repository
-- 🌿 **Traditional Plant Medicine** - Comprehensive plant chemical compositions and benefits
-- 🧬 **SMILES Notation Support** - Chemical structure representations
-- 💬 Interactive chat interface powered by Google Gemini Flash
-- ⚙️ Configurable AI model parameters
-- 📊 Chat history export and management
-- 🎨 Modern Apple Design-inspired UI
-- 🔒 Secure API key management
-- 📱 Responsive web interface
-- 🔍 **Smart Data Integration** - Automatically enhances responses with relevant chemical data
+## ✨ Key Features
+
+### 🤖 AI-Powered Chat Interface
+- **Google Gemini Flash Integration** for intelligent responses
+- **Apple Design-inspired UI** with modern gradients and styling
+- **Real-time Chemistry Assistance** with contextual awareness
+- **Smart Context Injection** from TradChem database
+
+### 🌿 TradChem Database Integration
+- **Real Traditional Medicine Data** with chemical compositions
+- **SMILES Chemical Formulas** for molecular analysis
+- **Multi-field Search** by plants, compounds, diseases, benefits
+- **Geographic and Cultural Context** for traditional medicines
+- **Clean Database Access** bypassing encoding issues
+
+### ⚙️ Advanced Configuration
+- **Customizable Model Parameters** (temperature, max tokens)
+- **Chat History Management** with export functionality
+- **API Status Monitoring** for Gemini and TradChem
+- **Comprehensive Error Handling** with fallback options
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-
-- Python 3.8 or higher
+- Python 3.8+
 - Google Gemini API key
+- TradChem database (included)
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd Trad-Chem-LLM
-   ```
+1. **Clone the repository:**
+```bash
+git clone https://github.com/your-repo/Trad-Chem-LLM.git
+cd Trad-Chem-LLM
+```
 
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+2. **Install dependencies:**
+```bash
+pip install -r requirements.txt
+```
 
-3. **Configure environment variables**
-   ```bash
-   # Copy the template file
-   copy env_template.txt .env
-   
-   # Edit .env file and add your Gemini API key
-   GEMINI_API_KEY=your_actual_gemini_api_key_here
-   ```
+3. **Configure API key:**
+Create a `.env` file in the project root:
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+```
 
-3.1. **TradChem Database Integration** (Already configured!)
-   ```bash
-   # The TradChem package is already configured in chemical_data_config.py
-   # Repository: https://github.com/INSTITUTE-OF-SCIENTIFIC-INFORMATICS/Trad-Chem.git
-   # Package: tradchem
-   ```
+4. **Run the application:**
+```bash
+streamlit run app.py
+```
 
-4. **Run the application**
-   ```bash
-   # Option 1: Using the launcher script
-   python run.py
-   
-   # Option 2: Direct Streamlit command
-   streamlit run app.py
-   ```
+5. **Access the application:**
+Open your browser and go to `http://localhost:8501`
 
-5. **Access the application**
-   Open your browser and navigate to `http://localhost:8501`
+## 🗄️ TradChem Database
+
+### Integration Status: ✅ **FULLY OPERATIONAL**
+
+The application now uses a **clean TradChem handler** that:
+- ✅ Directly accesses the JSON database
+- ✅ Bypasses Python module import issues
+- ✅ Provides real traditional medicine data
+- ✅ Supports SMILES chemical formulas
+- ✅ Includes comprehensive plant information
+
+### Sample Database Content:
+- **Kameshwari Rasayanaya** - Ayurvedic vitality enhancement
+  - Cannabis compounds with SMILES notations
+  - Bee honey glucose and fructose
+  - Ghee fatty acids
+- **Traditional Medicine Systems** - Multiple cultural approaches
+- **Chemical Compositions** - Detailed molecular data
+
+## 🔧 Technical Architecture
+
+### Core Components
+
+1. **app.py** - Main Streamlit application with UI
+2. **config.py** - Configuration management with Gemini API settings
+3. **utils/llm_handler.py** - Google Gemini Flash API integration
+4. **utils/clean_tradchem_handler.py** - Clean TradChem database access
+5. **utils/chemical_data_handler.py** - Legacy handler with enhanced sample data
+
+### API Integration
+
+- **Google Gemini Flash** (`gemini-1.5-flash`)
+  - Temperature control: 0.0 - 2.0
+  - Token limits: 100 - 4000
+  - Smart context injection from TradChem
+
+### Database Structure
+
+```json
+{
+  "product_name": "Traditional Medicine Name",
+  "benefits": ["Benefit 1", "Benefit 2"],
+  "diseases": ["Disease 1", "Disease 2"],
+  "chemical_composition": {
+    "ingredients": {
+      "Ingredient Name": {
+        "compound_name": "SMILES_notation"
+      }
+    }
+  }
+}
+```
+
+## 🧪 Usage Examples
+
+### Basic Chemistry Questions
+- "What are the chemical compounds in turmeric?"
+- "Explain the SMILES notation for curcumin"
+- "What are the benefits of cannabis in traditional medicine?"
+
+### Traditional Medicine Queries
+- "Show me Ayurvedic medicines for inflammation"
+- "What plants help with digestive disorders?"
+- "Explain the traditional use of bee honey compounds"
+
+### Advanced Analysis
+- "Compare the molecular structures of different gingerol compounds"
+- "What are the geographic origins of anti-inflammatory plants?"
+- "Analyze the chemical composition of Kameshwari Rasayanaya"
+
+## 📊 Features & Capabilities
+
+### Chat Interface
+- 💬 **Interactive Chat** with memory and context
+- 📁 **Export Chat History** in JSON format
+- 🗑️ **Clear Chat** functionality
+- 🎛️ **Model Configuration** controls
+
+### TradChem Integration
+- 🔍 **Smart Search** across multiple fields
+- 📈 **Relevance Scoring** for search results
+- 🧬 **Chemical Formula Display** with SMILES
+- 🌍 **Geographic and Cultural Context**
+
+### Technical Features
+- 🔌 **API Status Monitoring**
+- ⚡ **Real-time Error Handling**
+- 🎨 **Apple Design UI**
+- 📱 **Responsive Layout**
+
+## 🛠️ Configuration
+
+### Environment Variables
+```env
+GEMINI_API_KEY=your_gemini_api_key
+APP_TITLE=Trad-Chem LLM
+APP_VERSION=1.0.0
+DEFAULT_TEMPERATURE=0.7
+DEFAULT_MAX_TOKENS=2000
+```
+
+### Model Parameters
+- **Temperature**: Controls response creativity (0.0 = focused, 2.0 = creative)
+- **Max Tokens**: Maximum response length (100-4000)
+- **Context Limit**: Number of TradChem results to include (3-10)
+
+## 🧪 Testing
+
+### Integration Tests
+```bash
+# Test TradChem integration
+python test_clean_integration.py
+
+# Test application setup
+python test_setup.py
+
+# Final integration verification
+python test_final_integration.py
+```
+
+### Expected Results
+- ✅ Clean TradChem handler creates successfully
+- ✅ Database loads without null bytes issues
+- ✅ LLM integration functions properly
+- ✅ Real traditional medicine data accessible
 
 ## 📁 Project Structure
 
 ```
 Trad-Chem-LLM/
-├── app.py                        # Main Streamlit application
-├── config.py                     # Configuration management
-├── chemical_data_config.py       # Chemical database integration config
-├── run.py                        # Application launcher
-├── requirements.txt              # Python dependencies
-├── env_template.txt              # Environment variables template
+├── app.py                          # Main Streamlit application
+├── config.py                       # Configuration settings
+├── requirements.txt                 # Python dependencies
 ├── utils/
-│   ├── __init__.py              # Package initializer
-│   ├── llm_handler.py           # Gemini API interaction handler
-│   └── chemical_data_handler.py # Chemical database integration
-├── README.md                    # Project documentation
-├── .gitignore                   # Git ignore rules
-└── LICENSE                      # License file
+│   ├── llm_handler.py              # Gemini API integration
+│   ├── clean_tradchem_handler.py   # Clean TradChem access
+│   └── chemical_data_handler.py    # Legacy enhanced handler
+├── Trad-Chem/                      # TradChem database
+│   └── tradchem/
+│       └── data/
+│           └── tradchem_database.json
+└── tests/                          # Test files
+    ├── test_clean_integration.py   # Integration tests
+    └── test_setup.py               # Setup verification
 ```
-
-## ⚙️ Configuration
-
-### Environment Variables
-
-Create a `.env` file with the following variables:
-
-```env
-# API Configuration
-GEMINI_API_KEY=your_gemini_api_key
-
-# App Settings
-APP_TITLE=Trad-Chem LLM
-APP_VERSION=1.0.0
-DEBUG_MODE=False
-
-# Model Configuration
-DEFAULT_MODEL=gemini-1.5-flash
-DEFAULT_TEMPERATURE=0.7
-DEFAULT_MAX_TOKENS=2000
-```
-
-### TradChem Database Integration ✅ **PRE-CONFIGURED**
-
-Your chatbot is already integrated with the [**TradChem Database**](https://github.com/INSTITUTE-OF-SCIENTIFIC-INFORMATICS/Trad-Chem.git) from the Institute of Scientific Informatics!
-
-#### 🧪 **What's Included:**
-
-- **Comprehensive Plant Database**: Traditional medicinal plants with scientific names
-- **Chemical Compositions**: SMILES notations and molecular structures
-- **Traditional Medicine Systems**: Ayurveda, Traditional Chinese Medicine, etc.
-- **Geographic Origins**: Plant sources from around the world
-- **Therapeutic Benefits**: Traditional uses and disease treatments
-- **Chemical Analysis**: Molecular formulas, weights, and properties
-
-#### 📊 **TradChem Data Structure:**
-
-```python
-{
-    "plants": {
-        "turmeric_extract": {
-            "scientific_name": "Curcuma longa",
-            "traditional_system": "Ayurveda",
-            "geographic_origin": "India",
-            "compounds": ["curcumin", "demethoxycurcumin"],
-            "benefits": ["Anti-inflammatory", "Antioxidant"],
-            "diseases": ["Arthritis", "Digestive disorders"]
-        }
-    },
-    "compounds": {
-        "curcumin": {
-            "smiles": "COC1=CC(\\C=C\\C(=O)CC(=O)\\C=C\\C2=CC(OC)=C(O)C=C2)=CC(OC)=C1O",
-            "molecular_formula": "C21H20O6",
-            "molecular_weight": 368.38,
-            "source_plants": ["turmeric_extract"]
-        }
-    }
-}
-```
-
-#### 🔧 **Auto-Enhancement Features:**
-
-- **Smart Context Injection**: Automatically finds relevant plant/compound data for user queries
-- **Traditional System Search**: Filters by Ayurveda, TCM, etc.
-- **Geographic Search**: Finds plants by region (India, China, etc.)
-- **Disease-Based Search**: Discovers plants traditionally used for specific conditions
-- **Chemical Structure Analysis**: SMILES notation validation and molecular properties
-
-### Model Parameters
-
-- **Temperature**: Controls randomness (0.0 = deterministic, 2.0 = very random)
-- **Max Tokens**: Maximum length of AI responses
-- **Model**: OpenAI model to use (gpt-3.5-turbo, gpt-4, etc.)
-
-## 🎯 Usage Examples
-
-### Chemistry & Traditional Medicine Questions You Can Ask
-
-#### 🌿 **Traditional Medicine Queries:**
-- "What are the chemical compounds in turmeric and their SMILES notations?"
-- "Show me Ayurvedic plants used for inflammation"
-- "What traditional Chinese medicines help with digestive issues?"
-- "Which plants from India have anti-inflammatory properties?"
-- "What is the molecular structure of curcumin?"
-
-#### 🧪 **Chemistry & SMILES Questions:**
-- "Explain the SMILES notation for gingerol"
-- "What is the molecular weight of azadirachtin?"
-- "Show me the chemical composition of neem extract"
-- "Compare the structures of curcumin and demethoxycurcumin"
-
-#### 📚 **General Chemistry Questions:**
-- "Explain the mechanism of SN2 reactions"
-- "What is the difference between ionic and covalent bonding?"
-- "How do you calculate the pH of a buffer solution?"
-- "Describe the structure and properties of benzene"
-
-### Features
-
-1. **Chat Interface**: Type your chemistry questions in natural language
-2. **History Management**: View, export, and clear chat history
-3. **Model Settings**: Adjust AI response parameters in the sidebar
-4. **Export Data**: Download chat logs as JSON files
-
-## 🛠️ Development
-
-### Adding New Features
-
-1. **New LLM Providers**: Extend `utils/llm_handler.py`
-2. **UI Components**: Modify `app.py` Streamlit components
-3. **Configuration**: Update `config.py` for new settings
-
-### Code Structure
-
-- **app.py**: Main Streamlit interface and chat logic
-- **config.py**: Configuration management and environment variables
-- **utils/llm_handler.py**: LLM API interactions and response generation
-- **run.py**: Application launcher with dependency checking
-
-## 📋 Requirements
-
-See `requirements.txt` for detailed dependencies:
-
-- streamlit>=1.28.0
-- google-generativeai>=0.3.0
-- python-dotenv>=1.0.0
-- requests>=2.31.0
-- pandas>=2.0.0
-- numpy>=1.24.0
-- scipy>=1.10.0
-- matplotlib>=3.7.0
-- seaborn>=0.12.0
-- scikit-learn>=1.3.0
-- jsonschema>=4.17.0
-- pydantic>=2.0.0
-- **TradChem Package** (installed from GitHub)
-
-## 🔒 Security
-
-- API keys are stored in environment variables
-- .env file is excluded from version control
-- No sensitive data is logged or stored persistently
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-1. **"Module not found" errors**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **API key not configured**
-   - Ensure `.env` file exists with valid `OPENAI_API_KEY`
-
-3. **Port already in use**
-   ```bash
-   streamlit run app.py --server.port 8502
-   ```
-
-4. **Slow responses**
-   - Check internet connection
-   - Verify OpenAI API status
-   - Reduce max_tokens in settings
-
-## 📄 License
-
-This project is licensed under the terms specified in the LICENSE file.
 
 ## 🤝 Contributing
 
+We welcome contributions to expand the traditional medicine database and improve the LLM integration!
+
+### How to Contribute
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📞 Support
+### Contribution Areas
+- 🌿 **Traditional Medicine Data** - Add new plants and compounds
+- 🧬 **Chemical Analysis** - Improve SMILES notation accuracy
+- 🎨 **UI/UX Improvements** - Enhance user interface
+- 🔧 **API Integration** - Add new LLM providers
 
-For issues and questions:
-1. Check the troubleshooting section
-2. Review existing GitHub issues
-3. Create a new issue with detailed information
+## 📄 License
 
-## 🤝 **Acknowledgments**
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Special thanks to the [**Institute of Scientific Informatics**](https://github.com/INSTITUTE-OF-SCIENTIFIC-INFORMATICS) for providing the comprehensive [**TradChem Database**](https://github.com/INSTITUTE-OF-SCIENTIFIC-INFORMATICS/Trad-Chem.git) that powers this chatbot's traditional medicine knowledge.
+## 🙏 Acknowledgments
+
+- **TradChem Database** - Comprehensive traditional medicine data
+- **Google Gemini Flash** - Advanced language model capabilities
+- **Streamlit Community** - Excellent web app framework
+- **Traditional Medicine Practitioners** - Invaluable knowledge preservation
+- **Open Source Community** - Collaborative development support
+
+## 📞 Support & Contact
+
+- **Issues**: Report bugs via [GitHub Issues](https://github.com/your-repo/issues)
+- **Documentation**: Full API documentation available
+- **Community**: Join our discussions for feature requests
 
 ---
 
-**@author SaltyHeart** | Trad-Chem LLM v1.0.0 | **Powered by TradChem Database & Google Gemini Flash**
+**@author Anu Gamage** | Trad-Chem LLM v1.0.0 | **Powered by TradChem Database & Google Gemini Flash**
+
+*Specialized AI Assistant for Traditional Chemistry and Medicinal Plants*

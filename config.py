@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-# @author SaltyHeart
+# @author Anu Gamage
 # Load environment variables from .env file
 load_dotenv()
 
