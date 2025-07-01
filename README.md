@@ -278,4 +278,4 @@ Special thanks to the [**Institute of Scientific Informatics**](https://github.c
 
 ---
 
-**@author SaltyHeart** | Trad-Chem LLM v1.0.0 | **Powered by TradChem Database & Google Gemini Flash**
+**@author Anu Gamage** | Trad-Chem LLM v1.0.0 | **Powered by TradChem Database & Google Gemini Flash**
