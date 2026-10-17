@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="580" viewBox="0 0 1200 580" role="img" aria-labelledby="title description">
+  <title id="title">Trad-Chem-LLM: from traditional medicine to molecular science</title>
+  <desc id="description">A conceptual data workflow connects formulations, plant ingredients, chemicals, ranked UniProt targets and PDB or AlphaFold structures. Records use peer-reviewed literature and computational predictions, with sources and methods preserved, and are submitted as matching CSV, JSON and Python files.</desc>
+  <defs>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M 24 0 H 0 V 24" fill="none" stroke="#dce6e1" stroke-width="0.6"/>
+    </pattern>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6" fill="none" stroke="#65786f" stroke-width="1.5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="580" fill="#f5f8f6"/>
+  <rect width="1200" height="580" fill="url(#grid)"/>
+  <path d="M48 54 H92" stroke="#12765b" stroke-width="6"/>
+  <g font-family="Helvetica, Arial, sans-serif" fill="#172e27">
+    <text x="48" y="112" font-size="46" font-weight="700">Trad-Chem-LLM</text>
+    <text x="48" y="151" font-size="23" fill="#4d655a">Traditional medicine, connected to molecular science.</text>
+    <text x="48" y="203" font-size="13" font-weight="700" fill="#526b5f">THE DATA JOURNEY</text>
+
+    <g fill="#ffffff" stroke="#cfdbd4">
+      <rect x="48" y="224" width="200" height="190" rx="8"/>
+      <rect x="274" y="224" width="200" height="190" rx="8"/>
+      <rect x="500" y="224" width="200" height="190" rx="8"/>
+      <rect x="726" y="224" width="200" height="190" rx="8"/>
+      <rect x="952" y="224" width="200" height="190" rx="8"/>
+    </g>
+    <g fill="none" stroke="#65786f" stroke-width="2" marker-end="url(#arrow)">
+      <path d="M252 319 H269"/>
+      <path d="M478 319 H495"/>
+      <path d="M704 319 H721"/>
+      <path d="M930 319 H947"/>
+    </g>
+
+    <g fill="none" stroke="#12765b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M77 281 H133 L127 309 H83 Z M82 291 H128 M112 280 L129 254"/>
+      <path d="M307 309 Q308 276 337 255 Q345 288 307 309 M307 309 L331 268 M318 287 L318 274 M318 287 L333 283"/>
+    </g>
+    <g fill="none" stroke="#a74738" stroke-width="3" stroke-linejoin="round">
+      <path d="M543 265 L563 277 V300 L543 312 L523 300 V277 Z M563 277 L582 266 M563 300 L582 310 M529 280 V296 M540 305 L556 296"/>
+      <circle cx="588" cy="263" r="6" fill="#ffffff"/>
+      <circle cx="588" cy="313" r="6" fill="#ffffff"/>
+    </g>
+    <g stroke="#29699a" stroke-width="3" fill="#ffffff">
+      <path d="M763 269 L796 287 L763 309 M796 287 L813 263 M796 287 L818 310" fill="none"/>
+      <circle cx="763" cy="269" r="7"/>
+      <circle cx="796" cy="287" r="9"/>
+      <circle cx="763" cy="309" r="7"/>
+      <circle cx="813" cy="263" r="6"/>
+      <circle cx="818" cy="310" r="6"/>
+    </g>
+    <g fill="none" stroke-linecap="round" stroke-width="5">
+      <path d="M980 299 C988 258 1005 258 1015 286 S1044 319 1055 270" stroke="#12765b"/>
+      <path d="M982 279 C1001 322 1011 319 1023 283 S1045 260 1060 302" stroke="#d18a28"/>
+    </g>
+
+    <g font-size="21" font-weight="700">
+      <text x="68" y="347">Formulations</text>
+      <text x="294" y="347">Ingredients</text>
+      <text x="520" y="347">Chemicals</text>
+      <text x="746" y="347">Protein targets</text>
+      <text x="972" y="347">3D structures</text>
+    </g>
+    <g font-size="15" fill="#526b5f">
+      <text x="68" y="375">Medicine system</text>
+      <text x="68" y="396">and formulation</text>
+      <text x="294" y="375">Plants, parts used</text>
+      <text x="294" y="396">and sub-components</text>
+      <text x="520" y="375">SMILES and</text>
+      <text x="520" y="396">PubChem identifiers</text>
+      <text x="746" y="375">Ranked UniProt IDs</text>
+      <text x="746" y="396">with supporting evidence</text>
+      <text x="972" y="375">PDB / AlphaFold</text>
+      <text x="972" y="396">One best per target</text>
+    </g>
+    <path d="M48 453 H1152" stroke="#c4d4ca"/>
+    <text x="48" y="489" font-size="17" font-weight="700">Peer-reviewed literature + computational predictions</text>
+    <text x="48" y="517" font-size="15" fill="#526b5f">Keep sources, methods and scores. Distinguish predictions from experimental evidence.</text>
+    <text x="1152" y="489" text-anchor="end" font-size="19" font-weight="700" fill="#12765b">CSV + JSON + Python</text>
+    <text x="1152" y="517" text-anchor="end" font-size="15" fill="#526b5f">One chemical. Three matching files.</text>
+  </g>
+</svg>

@@ -1,5 +1,7 @@
 # Trad-Chem-LLM
 
+![Trad-Chem-LLM overview: formulations connect to ingredients, chemicals, UniProt protein targets and PDB or AlphaFold structures, supported by literature and computational predictions.](assets/tradchem-overview.svg)
+
 **Trad-Chem-LLM** is a community-built database that connects **traditional medicine** to molecular
 science: each traditional medicine is linked to its **plants**, the **chemicals** in those plants
 (with SMILES), the **top 10 target proteins** of each chemical, and the biology around those proteins.
