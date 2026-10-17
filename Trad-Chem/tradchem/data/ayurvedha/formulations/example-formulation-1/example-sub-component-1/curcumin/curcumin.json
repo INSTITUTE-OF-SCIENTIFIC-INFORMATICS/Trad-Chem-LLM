@@ -1,0 +1,184 @@
+{
+  "medicine": "Example Medicine A",
+  "system": "Ayurveda",
+  "plant": "Curcuma longa",
+  "plant_type": "herb",
+  "part_used": "rhizome",
+  "family": "Zingiberaceae",
+  "common_name": "Turmeric",
+  "chemical_name": "curcumin",
+  "smiles": "COC1=C(C=CC(=C1)C=CC(=O)CC(=O)C=CC2=CC(=C(C=C2)O)OC)O",
+  "pubchem_cid": "969516",
+  "diseases": [
+    "colorectal cancer",
+    "arthritis"
+  ],
+  "targets": [
+    {
+      "uniprot_id": "P35354",
+      "protein_name": "Prostaglandin G/H synthase 2",
+      "protein_acronym": "PTGS2",
+      "species": "Homo sapiens",
+      "taxon_id": 9606,
+      "cell_types": [
+        "macrophage",
+        "epithelial cell"
+      ],
+      "best_structure": "PDB:5IKR",
+      "other_structures": [
+        "AlphaFold:AF-P35354-F1"
+      ],
+      "go_terms": [
+        "GO:0006954 inflammatory response",
+        "GO:0005737 cytoplasm"
+      ],
+      "protein_diseases": [
+        "inflammation"
+      ],
+      "method": "literature",
+      "score": "",
+      "source_ref": "EXAMPLE ONLY - replace with real citation / DOI"
+    },
+    {
+      "uniprot_id": "P03372",
+      "protein_name": "Estrogen receptor",
+      "protein_acronym": "ESR1",
+      "species": "Homo sapiens",
+      "taxon_id": 9606,
+      "cell_types": [
+        "epithelial cell"
+      ],
+      "best_structure": "AlphaFold:AF-P03372-F1",
+      "other_structures": [],
+      "go_terms": [
+        "GO:0005634 nucleus"
+      ],
+      "protein_diseases": [
+        "breast cancer"
+      ],
+      "method": "docking",
+      "score": -8.1,
+      "source_ref": "EXAMPLE ONLY"
+    },
+    {
+      "uniprot_id": "",
+      "protein_name": "",
+      "protein_acronym": "",
+      "species": "",
+      "taxon_id": "",
+      "cell_types": [],
+      "best_structure": "",
+      "other_structures": [],
+      "go_terms": [],
+      "protein_diseases": [],
+      "method": "",
+      "score": "",
+      "source_ref": ""
+    },
+    {
+      "uniprot_id": "",
+      "protein_name": "",
+      "protein_acronym": "",
+      "species": "",
+      "taxon_id": "",
+      "cell_types": [],
+      "best_structure": "",
+      "other_structures": [],
+      "go_terms": [],
+      "protein_diseases": [],
+      "method": "",
+      "score": "",
+      "source_ref": ""
+    },
+    {
+      "uniprot_id": "",
+      "protein_name": "",
+      "protein_acronym": "",
+      "species": "",
+      "taxon_id": "",
+      "cell_types": [],
+      "best_structure": "",
+      "other_structures": [],
+      "go_terms": [],
+      "protein_diseases": [],
+      "method": "",
+      "score": "",
+      "source_ref": ""
+    },
+    {
+      "uniprot_id": "",
+      "protein_name": "",
+      "protein_acronym": "",
+      "species": "",
+      "taxon_id": "",
+      "cell_types": [],
+      "best_structure": "",
+      "other_structures": [],
+      "go_terms": [],
+      "protein_diseases": [],
+      "method": "",
+      "score": "",
+      "source_ref": ""
+    },
+    {
+      "uniprot_id": "",
+      "protein_name": "",
+      "protein_acronym": "",
+      "species": "",
+      "taxon_id": "",
+      "cell_types": [],
+      "best_structure": "",
+      "other_structures": [],
+      "go_terms": [],
+      "protein_diseases": [],
+      "method": "",
+      "score": "",
+      "source_ref": ""
+    },
+    {
+      "uniprot_id": "",
+      "protein_name": "",
+      "protein_acronym": "",
+      "species": "",
+      "taxon_id": "",
+      "cell_types": [],
+      "best_structure": "",
+      "other_structures": [],
+      "go_terms": [],
+      "protein_diseases": [],
+      "method": "",
+      "score": "",
+      "source_ref": ""
+    },
+    {
+      "uniprot_id": "",
+      "protein_name": "",
+      "protein_acronym": "",
+      "species": "",
+      "taxon_id": "",
+      "cell_types": [],
+      "best_structure": "",
+      "other_structures": [],
+      "go_terms": [],
+      "protein_diseases": [],
+      "method": "",
+      "score": "",
+      "source_ref": ""
+    },
+    {
+      "uniprot_id": "",
+      "protein_name": "",
+      "protein_acronym": "",
+      "species": "",
+      "taxon_id": "",
+      "cell_types": [],
+      "best_structure": "",
+      "other_structures": [],
+      "go_terms": [],
+      "protein_diseases": [],
+      "method": "",
+      "score": "",
+      "source_ref": ""
+    }
+  ]
+}
