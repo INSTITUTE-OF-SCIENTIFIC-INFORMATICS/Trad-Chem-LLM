@@ -130,6 +130,6 @@ Details and the full field reference are in [contributions/CONTRIBUTING.md](cont
 
 ## Maintainers
 
-- Contact / issues: **[add maintainer name and contact]**
-- Licence: **[add licence for the data and code]**
-- How to cite: **[add citation text]**
+- Contact / issues: **Anu Gamage**
+- Licence: **MIT**
+- How to cite: **ISI/Trad-Chem**
