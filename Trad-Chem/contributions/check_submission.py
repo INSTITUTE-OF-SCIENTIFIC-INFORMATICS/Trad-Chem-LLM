@@ -2,33 +2,41 @@
 """
 Trad-Chem-LLM submission checker.
 
-Every contribution must come as THREE files with the same base name and identical content:
-    contributions/curcumin_top10.csv
-    contributions/curcumin_top10.json
-    contributions/curcumin_top10.py
+Every chemical lives in its own folder with THREE files of the same name and identical content:
+    tradchem/data/<system>/formulations/<formulation>/<sub-component>/<chemical>/
+        __init__.py
+        <chemical>.csv
+        <chemical>.json
+        <chemical>.py
 
-Check them (give the path WITHOUT the extension, or give the three files):
-    python3 check_submission.py contributions/curcumin_top10
-    python3 check_submission.py a.csv b.json c.py
+Check them from the repository root (give the chemical folder, the path WITHOUT the extension,
+or the three files):
+    python3 contributions/check_submission.py tradchem/data/ayurvedha/formulations/<formulation>/<sub-component>/curcumin
+    python3 contributions/check_submission.py .../curcumin/curcumin
+    python3 contributions/check_submission.py a.csv b.json c.py
 
 What it does
-  1. confirms all three files exist
+  1. confirms all three files exist, are named after their folder, and sit in the right folder layout
   2. loads each one into its own throw-away database (your real tradmed.db is never touched)
   3. confirms the three databases hold exactly the same data
   4. flags leftover example rows, missing sources, and chemicals without 10 proteins
 
 Maintainers only:  add --import to load a passing submission into tradmed.db
-    python3 check_submission.py contributions/curcumin_top10 --import
+    python3 contributions/check_submission.py <chemical-folder> --import
 
 NOTE for maintainers: the .py file is executed to read it. Read a stranger's .py before checking it.
 """
-import argparse, importlib.util, os, sqlite3, sys, tempfile
+import argparse, importlib.util, os, re, sqlite3, sys, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from import_data import import_record, run as run_import, DB_DEFAULT  # noqa: E402
+try:
+    from import_data import import_record, run as run_import, DB_DEFAULT  # noqa: E402
+except ImportError:
+    sys.exit(f"import_data.py not found. Put import_data.py and schema.sql in {HERE} and run again.")
 
 SCHEMA = os.path.join(HERE, "schema.sql")
+NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 
 # name-based (not id-based) views of everything a contribution can contain
 QUERIES = {
@@ -67,7 +75,7 @@ def load_py(db, path):
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     if not hasattr(mod, "CHEMICAL") or not hasattr(mod, "TARGETS"):
-        raise ValueError("the .py file must define CHEMICAL and TARGETS (copy add_top10.py)")
+        raise ValueError("the .py file must define CHEMICAL and TARGETS (copy the example curcumin.py)")
     con = sqlite3.connect(db)
     con.execute("PRAGMA foreign_keys=ON")
     try:
@@ -86,16 +94,42 @@ def snapshot(db):
     return snap
 
 
+def check_layout(files, errors):
+    folders = {os.path.dirname(os.path.abspath(p)) for p in files.values()}
+    if len(folders) != 1:
+        errors.append("the .csv, .json and .py files must be in the same chemical folder")
+        return
+    folder = folders.pop()
+    chem = os.path.basename(folder)
+    for kind, p in files.items():
+        if os.path.splitext(os.path.basename(p))[0] != chem:
+            errors.append(f"{os.path.basename(p)} must be named {chem}.{kind} (same as its folder)")
+    if not os.path.exists(os.path.join(folder, "__init__.py")):
+        errors.append(f"missing __init__.py in {folder}")
+
+    parts = folder.replace("\\", "/").split("/")
+    idx = next((i for i in range(len(parts) - 1) if parts[i] == "tradchem" and parts[i + 1] == "data"), None)
+    rel = parts[idx + 2:] if idx is not None else []
+    if len(rel) != 5 or rel[1] != "formulations":
+        errors.append("files must be in tradchem/data/<system>/formulations/<formulation>/<sub-component>/<chemical>/")
+        return
+    for name in (rel[2], rel[3], rel[4]):
+        if not NAME_RE.match(name):
+            errors.append(f"folder name '{name}' must be lower-case words joined by '-'")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("paths", nargs="+", help="base path without extension, or the three files")
+    ap.add_argument("paths", nargs="+", help="chemical folder, base path without extension, or the three files")
     ap.add_argument("--import", dest="do_import", action="store_true",
                     help="maintainers: load a passing submission into tradmed.db")
     ap.add_argument("--db", default=DB_DEFAULT)
     a = ap.parse_args()
 
     if len(a.paths) == 1:
-        base = a.paths[0]
+        base = a.paths[0].rstrip("/\\")
+        if os.path.isdir(base):
+            base = os.path.join(base, os.path.basename(base))
         for ext in (".csv", ".json", ".py"):
             if base.lower().endswith(ext):
                 base = base[: -len(ext)]
@@ -114,6 +148,8 @@ def main():
         for k in missing:
             errors.append(f"missing .{k} file (every contribution needs CSV + JSON + Python)")
         return report(errors, warnings)
+
+    check_layout(files, errors)
 
     snaps = {}
     with tempfile.TemporaryDirectory() as tmp:

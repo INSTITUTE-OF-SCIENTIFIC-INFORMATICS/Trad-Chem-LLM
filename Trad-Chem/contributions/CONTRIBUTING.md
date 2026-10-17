@@ -1,177 +1,198 @@
 # Contributing to Trad-Chem-LLM
 
-Thank you for adding data. This guide takes you from an empty template to a checked submission.
+Thank you for adding data! This guide explains, step by step, how to add a formulation to the database.
 You do not need to know SQL.
-
-## The rule: every contribution uses all three file types
-
-For **each chemical** you contribute, submit **three files with the same base name and the same content**:
-
-```
-contributions/curcumin_top10.csv
-contributions/curcumin_top10.json
-contributions/curcumin_top10.py
-```
-
-- File names: lower-case, underscores, `<chemical>_top10.<ext>` (example: `gallic_acid_top10.csv`).
-- One chemical per submission, with **up to 10 target proteins** (aim for exactly 10).
-- A submission with only one or two of the three files will be rejected by the checker.
-- After checking, **sign your name in [CONTRIBUTORS.md](CONTRIBUTORS.md)**.
 
 ---
 
-## Step by step
+## How the data is organised
 
-### 1. Prepare
-Put these in one folder: `import_data.py`, `check_submission.py`, `schema.sql`, `tradmed.db`,
-`top10_template.csv`, `top10_template.json`, `add_top10.py`. You need Python 3.8+ and nothing else.
+All data lives in `tradchem/data/`. Each level is a folder:
 
-### 2. Collect your data first
-For your chemical, gather in a notebook or spreadsheet:
-- medicine, plant (scientific name), chemical name and SMILES
-- the top 10 proteins, ranked, with UniProt ID, acronym, species, cell types
-- for each protein: best structure, GO terms, diseases, method, score, source
-
-Filling the CSV (a spreadsheet) first is the quickest; then copy the same values into the JSON and Python files.
-
-### 3. Fill the CSV
-```bash
-cp top10_template.csv contributions/<chemical>_top10.csv
 ```
-- Keep the header row. **One row per protein**, up to 10 rows.
-- **Repeat the medicine, plant and chemical columns on every row.**
-- Put the protein's rank (1 to 10) in `rank`. Separate multiple values in one cell with `;`.
-- Save as **CSV UTF-8**.
-- Delete the example rows.
-
-### 4. Fill the JSON
-```bash
-cp top10_template.json contributions/<chemical>_top10.json
-```
-- Chemical details **once** at the top; protein details inside `targets`.
-- **The order of `targets` is the rank.** Put the best hit first.
-- Multi-value fields (`cell_types`, `go_terms`, `protein_diseases`, `other_structures`, `diseases`) are lists: `["a", "b"]`.
-- Remove the example proteins; delete or leave empty any unused slots.
-
-### 5. Fill the Python file
-```bash
-cp add_top10.py contributions/<chemical>_top10.py
-```
-- Edit the `CHEMICAL = {...}` block.
-- Fill one `slot(...)` per protein inside `TARGETS`, best hit first (order = rank).
-- Unused slots can stay as `slot()`.
-- You do not need to run it yourself; the checker loads it for you.
-
-### 6. Check your three files
-```bash
-python3 check_submission.py contributions/<chemical>_top10
+tradchem/data/
+└── <system>/                     e.g. ayurvedha
+    └── formulations/
+        └── <formulation>/        e.g. harithakyadiya-kashaya
+            └── <sub-component>/  a plant or other ingredient, e.g. curcuma-longa
+                └── <chemical>/   e.g. curcumin
+                    ├── __init__.py
+                    ├── curcumin.csv
+                    ├── curcumin.json
+                    └── curcumin.py
 ```
 
-Fix every `ERROR` and re-run until you see **PASSED**. Read the `warning` lines too.
-The checker never touches the real database.
+**One chemical = one folder = three files (`.csv`, `.json`, `.py`) with the same content.**
 
-### 7. Submit
-Send or open a pull request with **only your three files in `contributions/`** and your row in `CONTRIBUTORS.md`:
-**[add pull-request or email instructions here]**.
+A complete worked example is in
+[tradchem/data/ayurvedha/formulations/example-formulation-1/example-sub-component-1/curcumin/](../tradchem/data/ayurvedha/formulations/example-formulation-1/example-sub-component-1/curcumin/).
 
-Please do **not** submit your own copy of `tradmed.db`; the maintainer imports accepted files.
+**Naming rules**
+- Use lower-case and join words with `-` (for example `gallic-acid`, `curcuma-longa`).
+- The three files must have the same name as their folder (`gallic-acid/gallic-acid.csv`).
+- Every new folder needs an empty `__init__.py`.
+
+---
+
+## Where the data can come from
+
+You can fill the data files using either (or both) of these:
+
+1. **Peer-reviewed literature** – published papers that report the chemical, its targets or its activity.
+   Use `method = literature` and put the DOI or PMID in `source_ref`.
+2. **Computational prediction tools** – tools that predict the protein targets of a chemical, for example:
+   - [SwissTargetPrediction](http://www.swisstargetprediction.ch/)
+   - NetInfer
+   - TrackMyPDB
+
+   Put the tool name in `method` (e.g. `SwissTargetPrediction`), the tool's score in `score`,
+   and the tool name, version / URL and the date you ran it in `source_ref`.
+
+If a target is supported by both a paper and a tool, prefer the paper as the `source_ref`.
+Never guess values: if you cannot find something, leave it empty.
+
+---
+
+## Step 1 – Get the repository
+
+```bash
+git clone https://github.com/INSTITUTE-OF-SCIENTIFIC-INFORMATICS/Trad-Chem-LLM.git
+cd Trad-Chem-LLM
+git checkout -b <team-name>/<formulation>
+```
+
+Always work on your own branch, never on `main`.
+
+## Step 2 – Choose a formulation (as a team)
+
+- Agree on **one formulation** within your team and check that no other team has taken it.
+- Create its folder: `tradchem/data/<system>/formulations/<formulation>/`
+
+## Step 3 – List the sub-components
+
+- List every plant (or other ingredient) in the formulation.
+- Create one folder per sub-component inside the formulation folder.
+- Record the plant's **scientific name**, type (herb / shrub / tree …), part used, family and common name.
+
+## Step 4 – Find and categorise the chemicals
+
+- For each sub-component, list the chemicals found in the **part used**
+  (sources: [IMPPAT](https://cb.imsc.res.in/imppat/), [PubChem](https://pubchem.ncbi.nlm.nih.gov/), literature).
+- Group them by class (alkaloids, flavonoids, terpenoids, phenolics, glycosides …).
+- Get the **SMILES** and **PubChem CID** from PubChem.
+- Create one folder per chemical inside the sub-component folder.
+
+## Step 5 – Find the top 10 UniProt targets for each chemical
+
+- Find the proteins each chemical acts on, using peer-reviewed literature or prediction tools
+  (SwissTargetPrediction, NetInfer, TrackMyPDB, [ChEMBL](https://www.ebi.ac.uk/chembl/), [STITCH](http://stitch.embl.de/)).
+  See [Where the data can come from](#where-the-data-can-come-from).
+- Keep the **best 10**, ranked 1 (best) to 10.
+- For each protein, look up on [UniProt](https://www.uniprot.org/): UniProt ID, name, acronym, species, cell types, GO terms, diseases.
+- Write down how you found it (`method`, `score`) and the source (`source_ref`: DOI / PMID / database).
+
+## Step 6 – Pick the best structure for each UniProt
+
+- Choose **one** best structure per protein:
+  1. an experimental structure from [RCSB PDB](https://www.rcsb.org/) with the best resolution that covers the binding site, or
+  2. if there is none, the [AlphaFold](https://alphafold.ebi.ac.uk/) model.
+- Write it as `PDB:5IKR` or `AlphaFold:AF-P35354-F1`. Other structures go in `other_structures`.
+
+## Step 7 – Fill the three files
+
+Copy the three example files from the `curcumin` folder into your chemical folder and rename them.
+
+| File | How to fill it |
+|---|---|
+| `<chemical>.csv` | One row per protein (up to 10). Repeat the medicine / plant / chemical columns on every row. Separate multiple values with `;`. Save as CSV UTF-8. |
+| `<chemical>.json` | Chemical details once at the top; proteins inside `targets`, best first. Lists use `["a", "b"]`. |
+| `<chemical>.py` | Edit the `CHEMICAL = {...}` block and one `slot(...)` per protein in `TARGETS`, best first. |
+
+Tip: fill the CSV first (in a spreadsheet), then copy the same values into the JSON and Python files.
+**Delete all example values** (PTGS2, ESR1, "EXAMPLE ONLY").
+
+## Step 8 – Check your files
+
+From the repository root:
+
+```bash
+python3 contributions/check_submission.py tradchem/data/<system>/formulations/<formulation>/<sub-component>/<chemical>/<chemical>
+```
+
+Fix every `ERROR` and run again until you see **PASSED**.
+
+## Step 9 – Sign and submit
+
+1. Add your row to [CONTRIBUTORS.md](../CONTRIBUTORS.md).
+2. Commit and push your branch:
+   ```bash
+   git add tradchem/data/<system>/formulations/<formulation> CONTRIBUTORS.md
+   git commit -m "Add <formulation> data"
+   git push origin <team-name>/<formulation>
+   ```
+3. Open a **Pull Request** to `main` on GitHub.
+
+Do **not** commit `tradmed.db` or `.DS_Store` files.
 
 ---
 
 ## Field reference
 
-Chemical-level fields are written once in JSON/Python and repeated on every CSV row.
+**Chemical level** (once per chemical)
 
-### Chemical level
+| Field | Required | Example |
+|---|---|---|
+| `chemical_name` | **yes** | `curcumin` |
+| `smiles` | **yes** | `COC1=C(C=CC(=C1)...)O` |
+| `pubchem_cid` | no | `969516` |
+| `medicine` | recommended | `Harithakyadiya Kashaya` |
+| `system` | recommended | `Ayurveda` / `Siddha` / `Unani` / `TCM` / `Other` |
+| `plant` | recommended | `Curcuma longa` (scientific name) |
+| `plant_type` | recommended | `herb` |
+| `part_used`, `family`, `common_name` | no | `rhizome`, `Zingiberaceae`, `Turmeric` |
+| `diseases` | no | `colorectal cancer; arthritis` (linked to the chemical) |
 
-| Field | Required | Example | Notes |
-|---|---|---|---|
-| `chemical_name` | **yes** | `curcumin` | One spelling per compound |
-| `smiles` | **yes** | `COC1=C(C=CC(=C1)...)O` | Copy from PubChem / ChEMBL |
-| `pubchem_cid` | no | `969516` | |
-| `medicine` | recommended | `Triphala` | Traditional medicine name |
-| `system` | recommended | `Ayurveda` | Ayurveda / Siddha / Unani / TCM / Other |
-| `plant` | recommended | `Curcuma longa` | **Scientific name** |
-| `plant_type` | recommended | `herb` | herb / shrub / tree / climber / fungus … |
-| `part_used` | no | `rhizome` | leaf / root / bark … |
-| `family`, `common_name` | no | `Zingiberaceae`, `Turmeric` | |
-| `diseases` | no | `colorectal cancer; arthritis` | Diseases linked to the **chemical** |
+**Protein level** (once per target, up to 10)
 
-### Protein level (one CSV row, JSON object or `slot` per protein)
-
-| Field | Required | Example | Notes |
-|---|---|---|---|
-| `rank` | CSV: yes | `1` | 1–10, unique per chemical. JSON/Python use list order |
-| `uniprot_id` | **yes** | `P35354` | UniProtKB accession |
-| `protein_name` | recommended | `Prostaglandin G/H synthase 2` | |
-| `protein_acronym` | recommended | `PTGS2` | |
-| `species` | recommended | `Homo sapiens` | |
-| `taxon_id` | first use of a species | `9606` | NCBI Taxonomy ID |
-| `cell_types` | recommended | `macrophage; epithelial cell` | |
-| `best_structure` | **yes** | `PDB:5IKR` | Exactly one per protein |
-| `other_structures` | no | `AlphaFold:AF-P35354-F1` | |
-| `go_terms` | recommended | `GO:0006954 inflammatory response` | ID, then name |
-| `protein_diseases` | recommended | `inflammation` | Diseases tied to **this protein** |
-| `method` | **yes** | `docking` | docking / assay / SwissTargetPrediction / literature |
-| `score` | no | `-8.1` | A number |
-| `source_ref` | **yes** | `doi:10.xxxx/xxxxx` | DOI, PMID, or database + date |
-
-**Structure format:** `DB:ID` where DB is exactly `PDB`, `AlphaFold` or `SWISS-MODEL`
-(`PDB:5IKR`, `AlphaFold:AF-P35354-F1`, `SWISS-MODEL:<id>`).
-Pick the best structure as: experimental PDB with the best resolution that covers the binding region;
-otherwise AlphaFold or SWISS-MODEL.
+| Field | Required | Example |
+|---|---|---|
+| `rank` | CSV only | `1` to `10` (JSON / Python use list order) |
+| `uniprot_id` | **yes** | `P35354` |
+| `protein_name`, `protein_acronym` | recommended | `Prostaglandin G/H synthase 2`, `PTGS2` |
+| `species`, `taxon_id` | recommended | `Homo sapiens`, `9606` |
+| `cell_types` | recommended | `macrophage; epithelial cell` |
+| `best_structure` | **yes** | `PDB:5IKR` |
+| `other_structures` | no | `AlphaFold:AF-P35354-F1` |
+| `go_terms` | recommended | `GO:0006954 inflammatory response` |
+| `protein_diseases` | recommended | `inflammation` |
+| `method` | **yes** | `literature` / `SwissTargetPrediction` / `NetInfer` / `TrackMyPDB` / `docking` / `assay` |
+| `score` | no | `-8.1` |
+| `source_ref` | **yes** | `doi:10.xxxx/xxxxx` |
 
 ---
 
-## Quality checklist (tick before submitting)
+## Checklist
 
-- [ ] Three files exist: `.csv`, `.json`, `.py`, same base name
+- [ ] Working on my own branch
+- [ ] Folders follow `system / formulations / formulation / sub-component / chemical`
+- [ ] Each chemical folder has `.csv`, `.json`, `.py` (same name) and `__init__.py`
+- [ ] No example values left
+- [ ] Each protein has a UniProt ID, one best structure and a real `source_ref`
 - [ ] `check_submission.py` says **PASSED**
-- [ ] No example rows left (PTGS2 / ESR1 / "EXAMPLE ONLY")
-- [ ] Every protein has a real `source_ref`
-- [ ] SMILES copied from a trusted database
-- [ ] UniProt, PDB, GO IDs verified on the live databases
-- [ ] Ranked 1–10, and the ranking method is in `method` / `score`
-- [ ] One `best_structure` per protein in `DB:ID` format
-- [ ] Plant names are scientific names
-- [ ] Disease, cell-type and chemical spellings match existing entries where possible
-- [ ] Your name and row added to `CONTRIBUTORS.md`
+- [ ] My row is added to `CONTRIBUTORS.md`
 
 ---
 
-## What the checker tells you
+## Common checker messages
 
-| Message | Meaning / fix |
+| Message | Fix |
 |---|---|
-| `missing .json file …` | Add the missing file type. All three are required |
-| `N row(s) in CSV but not in .json` | The files disagree; make them identical |
-| `example source_ref still present` | Replace the sample citation with a real one |
-| `source_ref is empty` | Add a DOI/PMID/database source |
-| `chemical_name and smiles are required` | Fill both |
-| `already stored with a different SMILES` | Same name, different structure; verify |
-| `has 11 targets; the limit is 10` | Keep the top 10 only |
-| `rank N … already used by …` | Two proteins share a rank |
-| `unknown structure source` | Use `PDB`, `AlphaFold` or `SWISS-MODEL` |
-| `species '…' needs taxon_id` | Add the taxon ID, e.g. 9606 |
-| `GO term '…' must start with GO:#######` | `GO:` + 7 digits, then the name |
-| warning: `has 2 protein(s); the project expects the top 10` | Add the remaining proteins |
-| warning: `no best structure marked` | Fill `best_structure` |
-
----
-
-## For maintainers
-
-1. Read the submitted `.py` before running anything: the checker executes it to read its data.
-2. Run `python3 check_submission.py contributions/<name>`.
-3. Spot-check a few IDs and sources against UniProt, RCSB PDB / AlphaFold DB, and the cited paper.
-4. Import: `python3 check_submission.py contributions/<name> --import` (only works if the check passes).
-5. Confirm the contributor's row in `CONTRIBUTORS.md` and fill the **Reviewed by** column.
-
----
-
-## Starting over (local copy only)
-
-```bash
-rm tradmed.db
-python3 -c "import sqlite3; sqlite3.connect('tradmed.db').executescript(open('schema.sql').read())"
-```
+| `missing .json file` | Add the missing file; all three are required |
+| `row(s) in CSV but not in .json` | Make the three files identical |
+| `example source_ref still present` | Replace with a real citation |
+| `source_ref is empty` | Add a DOI / PMID / database source |
+| `has 11 targets; the limit is 10` | Keep only the top 10 |
+| `rank N … already used` | Two proteins share a rank |
+| `unknown structure source` | Use `PDB:`, `AlphaFold:` or `SWISS-MODEL:` |
+| `species '…' needs taxon_id` | Add the taxon ID (e.g. `9606`) |
+| `GO term must start with GO:#######` | Use `GO:` + 7 digits, then the name |

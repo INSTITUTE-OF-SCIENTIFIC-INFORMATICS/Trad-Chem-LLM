@@ -4,24 +4,24 @@
 science: each traditional medicine is linked to its **plants**, the **chemicals** in those plants
 (with SMILES), the **top 10 target proteins** of each chemical, and the biology around those proteins.
 
-> **Want to add data? Read [CONTRIBUTING.md](CONTRIBUTING.md), then sign the table in
+> **Want to add data? Read [contributions/CONTRIBUTING.md](contributions/CONTRIBUTING.md), then sign the table in
 > [CONTRIBUTORS.md](CONTRIBUTORS.md).**
-> Every contribution must be submitted as **three files: CSV + JSON + Python**.
+> Every chemical is submitted as **three files: CSV + JSON + Python**, inside its own folder under `tradchem/data/`.
 
 ---
 
 ## What the database holds
 
 ```
-Traditional medicine → Plant (type) → Chemical (name + SMILES)
-                                          │
-                                          └─ Top 10 proteins (UniProt IDs, ranked, method, score)
-                                                 ├─ best structure (PDB / AlphaFold / SWISS-MODEL id)
-                                                 ├─ protein acronym
-                                                 ├─ cell types
-                                                 ├─ species
-                                                 ├─ GO terms
-                                                 └─ diseases (per protein, and per chemical)
+System → Formulation → Sub-component (plant) → Chemical (name + SMILES)
+                                                    │
+                                                    └─ Top 10 proteins (UniProt IDs, ranked, method, score)
+                                                           ├─ best structure (PDB / AlphaFold / SWISS-MODEL id)
+                                                           ├─ protein acronym
+                                                           ├─ cell types
+                                                           ├─ species
+                                                           ├─ GO terms
+                                                           └─ diseases (per protein, and per chemical)
 ```
 
 | Data | Stored as |
@@ -42,34 +42,48 @@ The database is SQLite (`tradmed.db`). `v_full_record` is a ready-made view that
 
 ## Repository contents
 
+```
+Trad-Chem-LLM/
+├── README.md
+├── CONTRIBUTORS.md
+├── contributions/
+│   ├── CONTRIBUTING.md
+│   └── check_submission.py
+└── tradchem/data/
+    └── <system>/                  e.g. ayurvedha
+        └── formulations/
+            └── <formulation>/
+                └── <sub-component>/
+                    └── <chemical>/
+                        ├── <chemical>.csv
+                        ├── <chemical>.json
+                        └── <chemical>.py
+```
+
 | Path | What it is |
 |---|---|
 | `README.md` | This file |
-| `CONTRIBUTING.md` | Step-by-step contribution rules (**read first**) |
 | `CONTRIBUTORS.md` | Table where every contributor signs their name next to their contribution |
-| `contributions/` | Submitted data: `<chemical>_top10.csv`, `.json`, `.py` |
-| `top10_template.csv` / `.json` / `add_top10.py` | The three templates to copy and fill |
-| `check_submission.py` | Checks that your CSV, JSON and Python files are valid and identical |
-| `import_data.py` | Importer used by everything above |
-| `schema.sql` | Table definitions |
-| `tradmed.db` | The master database |
-| `templates/` | One empty CSV per table (advanced use) |
+| `contributions/CONTRIBUTING.md` | Step-by-step contribution guide (**read first**) |
+| `contributions/check_submission.py` | Checks that your CSV, JSON and Python files are valid and identical |
+| `tradchem/data/` | All data, one folder per system / formulation / sub-component / chemical |
+| `.../example-formulation-1/example-sub-component-1/curcumin/` | Worked example to copy |
 
 ---
 
 ## Quick start
 
 ```bash
-# 1. get the files into one folder, then check Python is installed
-python3 --version
+# 1. clone and make your own branch
+git clone https://github.com/INSTITUTE-OF-SCIENTIFIC-INFORMATICS/Trad-Chem-LLM.git
+cd Trad-Chem-LLM
+git checkout -b <team-name>/<formulation>
 
-# 2. copy the three templates, fill them in (see CONTRIBUTING.md)
-cp top10_template.csv  contributions/curcumin_top10.csv
-cp top10_template.json contributions/curcumin_top10.json
-cp add_top10.py        contributions/curcumin_top10.py
+# 2. create your chemical folder and copy the example files into it, then fill them in
+#    tradchem/data/<system>/formulations/<formulation>/<sub-component>/<chemical>/
 
 # 3. check your three files agree
-python3 check_submission.py contributions/curcumin_top10
+python3 contributions/check_submission.py tradchem/data/<system>/formulations/<formulation>/<sub-component>/<chemical>/<chemical>
 ```
 
 No extra Python packages are needed.
@@ -78,13 +92,13 @@ No extra Python packages are needed.
 
 ## The one rule
 
-**One chemical = one submission = three files with the same content**:
+**One chemical = one folder = three files with the same content**:
 
 | File | Format |
 |---|---|
-| `<chemical>_top10.csv` | spreadsheet, one row per protein |
-| `<chemical>_top10.json` | JSON, chemical once + a list of up to 10 proteins |
-| `<chemical>_top10.py` | Python, `CHEMICAL` + 10 `slot(...)` entries |
+| `<chemical>.csv` | spreadsheet, one row per protein |
+| `<chemical>.json` | JSON, chemical once + a list of up to 10 proteins |
+| `<chemical>.py` | Python, `CHEMICAL` + 10 `slot(...)` entries |
 
 `check_submission.py` loads all three into separate throw-away databases and fails if they differ,
 if any file is missing, or if example data or sources are left in.
@@ -98,7 +112,7 @@ if any file is missing, or if example data or sources are left in.
 - "Top 10" is a **ranked** list; state how it was ranked (`method`, `score`).
 - Exactly one **best structure** per protein.
 
-Details and the full field reference are in [CONTRIBUTING.md](CONTRIBUTING.md).
+Details and the full field reference are in [contributions/CONTRIBUTING.md](contributions/CONTRIBUTING.md).
 
 ---
 
