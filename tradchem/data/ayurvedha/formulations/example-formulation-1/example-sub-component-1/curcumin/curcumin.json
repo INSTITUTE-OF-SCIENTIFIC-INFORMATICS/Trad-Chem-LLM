@@ -56,7 +56,7 @@
       "protein_diseases": [
         "breast cancer"
       ],
-      "method": "netlnfer, swiz target",
+      "method": "NetInfer",
       "score": -8.1,
       "source_ref": "EXAMPLE ONLY"
     },

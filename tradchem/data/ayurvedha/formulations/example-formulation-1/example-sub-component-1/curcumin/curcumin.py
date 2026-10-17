@@ -1,20 +1,25 @@
 #!/usr/bin/env python3
 """
-Add ONE chemical with its TOP 10 target proteins (UniProt IDs), each with its best
+EXAMPLE: one chemical with its TOP 10 target proteins (UniProt IDs), each with its best
 structure, GO terms, diseases, method and score.
 
-1. Edit CHEMICAL (the compound + where it comes from).
-2. Edit TARGETS: fill slot(...) for each protein, best hit first. Order = rank 1..10.
-   Leave unused slots as slot() or delete them. More than 10 is rejected.
-3. Run:   python3 add_top10.py
-   (keep this file next to import_data.py and tradmed.db)
+Lives in:  tradchem/data/<system>/formulations/<formulation>/<sub-component>/<chemical>/<chemical>.py
+Keep the same data in <chemical>.csv and <chemical>.json.
 
-For another chemical: copy this file, or change CHEMICAL and TARGETS and run again.
-Everything for the chemical is saved together: if any protein has a mistake,
-nothing for that chemical is saved and the error says which protein.
+1. Copy this folder, rename the folder and the three files to your chemical (e.g. gallic-acid).
+2. Edit CHEMICAL (the compound + where it comes from).
+3. Edit TARGETS: fill slot(...) for each protein, best hit first. Order = rank 1..10.
+   Leave unused slots as slot() or delete them. More than 10 is rejected.
+4. Check from the repository root:
+       python3 contributions/check_submission.py <path-to-this-folder>
 """
 import sqlite3
-from import_data import import_record, DB_DEFAULT
+import sys
+from pathlib import Path
+
+# import_data.py lives in <repo>/contributions/
+sys.path.insert(0, str(Path(__file__).resolve().parents[7] / "contributions"))
+from import_data import import_record, DB_DEFAULT  # noqa: E402
 
 # ------------------------------------------------------------------ the chemical
 CHEMICAL = {
@@ -38,7 +43,8 @@ def slot(uniprot_id="", protein_name="", protein_acronym="", species="", taxon_i
          protein_diseases=(), method="", score="", source_ref=""):
     """best_structure / other_structures look like  PDB:5IKR  |  AlphaFold:AF-P35354-F1  |  SWISS-MODEL:xxxx
     go_terms look like  "GO:0006954 inflammatory response"
-    method: docking / assay / SwissTargetPrediction / literature     score: affinity or probability"""
+    method: literature / SwissTargetPrediction / NetInfer / TrackMyPDB / docking / assay
+    score: affinity or probability"""
     return dict(uniprot_id=uniprot_id, protein_name=protein_name, protein_acronym=protein_acronym,
                 species=species, taxon_id=taxon_id, cell_types=list(cell_types),
                 best_structure=best_structure, other_structures=list(other_structures),
@@ -63,7 +69,7 @@ TARGETS = [
         best_structure="AlphaFold:AF-P03372-F1",
         go_terms=["GO:0005634 nucleus"],
         protein_diseases=["breast cancer"],
-        method="docking", score=-8.1, source_ref="EXAMPLE ONLY"),
+        method="NetInfer", score=-8.1, source_ref="EXAMPLE ONLY"),
     slot(),  # rank 3
     slot(),  # rank 4
     slot(),  # rank 5
