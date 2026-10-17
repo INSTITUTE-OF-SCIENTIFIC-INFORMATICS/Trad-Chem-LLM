@@ -10,6 +10,16 @@ science: each traditional medicine is linked to its **plants**, the **chemicals*
 > [CONTRIBUTORS.md](CONTRIBUTORS.md).**
 > Every chemical is submitted as **three files: CSV + JSON + Python**, inside its own folder under `tradchem/data/`.
 
+> [!IMPORTANT]
+> **Please do not push directly to `main`.**
+> Create your own branch, add your data there, and open a **Pull Request** to `main`.
+> Any size is welcome – one chemical or a whole formulation. A maintainer will review and merge it.
+>
+> ```bash
+> git checkout -b <team-name>/<formulation>
+> git push origin <team-name>/<formulation>   # then open a Pull Request on GitHub
+> ```
+
 ---
 
 ## What the database holds
