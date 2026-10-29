@@ -1,0 +1,32 @@
+{
+  "medicine": "",
+  "system": "Ayurveda",
+  "plant": "Mollugo cerviana",
+  "plant_type": "herb",
+  "part_used": "whole plant",
+  "family": "Molluginaceae",
+  "common_name": "Pathpadagam (පත්පාඩගම්)",
+  "chemical_name": "2,5-di-tert-butylhydroquinone",
+  "smiles": "CC(C)(C)C1=CC(=C(C=C1O)C(C)(C)C)O",
+  "pubchem_cid": "2374",
+  "diseases": [],
+  "targets": [
+    {
+      "uniprot_id": "P04191",
+      "protein_name": "Sarcoplasmic/endoplasmic reticulum calcium ATPase 1",
+      "protein_acronym": "ATP2A1",
+      "species": "Oryctolagus cuniculus",
+      "taxon_id": 9986,
+      "cell_types": [],
+      "best_structure": "PDB:2AGV",
+      "other_structures": [],
+      "go_terms": [
+        "GO:1990036"
+      ],
+      "protein_diseases": [],
+      "method": "literature",
+      "score": "",
+      "source_ref": "doi:10.1073/pnas.0506222102"
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+medicine,system,plant,plant_type,part_used,family,common_name,chemical_name,smiles,pubchem_cid,diseases,rank,uniprot_id,protein_name,protein_acronym,species,taxon_id,cell_types,best_structure,other_structures,go_terms,protein_diseases,method,score,source_ref
+,Ayurveda,Mollugo cerviana,herb,whole plant,Molluginaceae,Pathpadagam (පත්පාඩගම්),guaiacol,COC1=CC=CC=C1O,460,,1,Q8NGN3,Olfactory receptor 10G4,OR10G4,Homo sapiens,9606,,AlphaFold:AF-Q8NGN3-F1,,GO:0004984,,docking,-4.15,PMID:40503524

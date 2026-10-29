@@ -14,16 +14,17 @@ pull request as your chemical folder (`<chemical>.csv`, `.json`, `.py`). Never d
 | # | Contributor name | Team | GitHub / email (optional) | System | Formulation | Sub-component (plant) | Chemical | Proteins (n/10) | CSV | JSON | PY | Main source (DOI / PMID) | Date | Reviewed by |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | – | *Example: Your Name* | *Team A* | *@yourhandle* | *Ayurveda* | *example-formulation-1* | *Curcuma longa* | *curcumin* | *10/10* | ✅ | ✅ | ✅ | *doi:10.xxxx/xxxxx* | *YYYY-MM-DD* | |
-| 1 | | | | | | | | /10 | ☐ | ☐ | ☐ | | | |
-| 2 | | | | | | | | /10 | ☐ | ☐ | ☐ | | | |
-| 3 | | | | | | | | /10 | ☐ | ☐ | ☐ | | | |
-| 4 | | | | | | | | /10 | ☐ | ☐ | ☐ | | | |
-| 5 | | | | | | | | /10 | ☐ | ☐ | ☐ | | | |
-| 6 | | | | | | | | /10 | ☐ | ☐ | ☐ | | | |
-| 7 | | | | | | | | /10 | ☐ | ☐ | ☐ | | | |
-| 8 | | | | | | | | /10 | ☐ | ☐ | ☐ | | | |
-| 9 | | | | | | | | /10 | ☐ | ☐ | ☐ | | | |
-| 10 | | | | | | | | /10 | ☐ | ☐ | ☐ | | | |
+| 1 | Janith Madhusanka | Not specified | @janithmadhu277-cmyk | Ayurveda | pathpadagam | Mollugo cerviana | 2-5-di-tert-butylhydroquinone | 1/10 | ✅ | ✅ | ✅ | doi:10.1073/pnas.0506222102 | 2026-10-29 |  |
+| 2 | Janith Madhusanka | Not specified | @janithmadhu277-cmyk | Ayurveda | pathpadagam | Mollugo cerviana | 4-vinylguaiacol | 2/10 | ✅ | ✅ | ✅ | doi:10.1007/s10529-017-2475-2 | 2026-10-29 |  |
+| 3 | Janith Madhusanka | Not specified | @janithmadhu277-cmyk | Ayurveda | pathpadagam | Mollugo cerviana | 4-vinylphenol | 2/10 | ✅ | ✅ | ✅ | PMID:14675903 | 2026-10-29 |  |
+| 4 | Janith Madhusanka | Not specified | @janithmadhu277-cmyk | Ayurveda | pathpadagam | Mollugo cerviana | capric-acid | 1/10 | ✅ | ✅ | ✅ | doi:10.1038/s41467-023-38985-6 | 2026-10-29 |  |
+| 5 | Janith Madhusanka | Not specified | @janithmadhu277-cmyk | Ayurveda | pathpadagam | Mollugo cerviana | di-n-octyl-phthalate | 8/10 | ✅ | ✅ | ✅ | PMID:40243467 | 2026-10-29 |  |
+| 6 | Janith Madhusanka | Not specified | @janithmadhu277-cmyk | Ayurveda | pathpadagam | Mollugo cerviana | diethyl-phthalate | 7/10 | ✅ | ✅ | ✅ | PMID:40243467 | 2026-10-29 |  |
+| 7 | Janith Madhusanka | Not specified | @janithmadhu277-cmyk | Ayurveda | pathpadagam | Mollugo cerviana | guaiacol | 1/10 | ✅ | ✅ | ✅ | PMID:40503524 | 2026-10-29 |  |
+| 8 | Janith Madhusanka | Not specified | @janithmadhu277-cmyk | Ayurveda | pathpadagam | Mollugo cerviana | lauric-acid | 1/10 | ✅ | ✅ | ✅ | doi:10.1038/s41467-023-38985-6 | 2026-10-29 |  |
+| 9 | Janith Madhusanka | Not specified | @janithmadhu277-cmyk | Ayurveda | pathpadagam | Mollugo cerviana | neophytadiene | 1/10 | ✅ | ✅ | ✅ | PMID:38386097 | 2026-10-29 |  |
+| 10 | Janith Madhusanka | Not specified | @janithmadhu277-cmyk | Ayurveda | pathpadagam | Mollugo cerviana | phytol | 1/10 | ✅ | ✅ | ✅ | PMID:16202384 | 2026-10-29 |  |
+| 11 | Janith Madhusanka | Not specified | @janithmadhu277-cmyk | Ayurveda | pathpadagam | Mollugo cerviana | squalene | 1/10 | ✅ | ✅ | ✅ | UniProt:Q14534 | 2026-10-29 |  |
 
 ## Contribution declaration
 
