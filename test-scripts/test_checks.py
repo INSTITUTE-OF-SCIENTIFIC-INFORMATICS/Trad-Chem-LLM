@@ -66,6 +66,21 @@ def run_check_pr(root, changed, author="octocat"):
     return result.returncode, report.read_text()
 
 
+class WorkflowTests(unittest.TestCase):
+    def test_fork_checkout_is_data_only(self):
+        workflow = (HERE.parent / ".github/workflows/pr-check.yml").read_text()
+        base_checkout, pr_checkout = workflow.split("      - name: Get the pull request files\n")
+        pr_checkout = pr_checkout.split("      - uses: actions/setup-python", 1)[0]
+        self.assertIn("ref: ${{ github.event.pull_request.base.sha }}", base_checkout)
+        self.assertNotIn("allow-unsafe-pr-checkout: true", base_checkout)
+        self.assertIn("ref: ${{ github.event.pull_request.head.sha }}", pr_checkout)
+        self.assertIn("path: pr", pr_checkout)
+        self.assertIn("persist-credentials: false", pr_checkout)
+        self.assertIn("allow-unsafe-pr-checkout: true", pr_checkout)
+        self.assertIn("run: python -m unittest discover -s base/test-scripts -v", workflow)
+        self.assertIn("python base/test-scripts/check_pr.py --root pr", workflow)
+
+
 class SubmissionTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
