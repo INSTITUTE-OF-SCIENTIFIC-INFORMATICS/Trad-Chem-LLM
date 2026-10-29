@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+# Data-only contribution; no network calls or computation.
+CHEMICAL = {'medicine': '',
+ 'system': 'Ayurveda',
+ 'plant': 'Mollugo cerviana',
+ 'plant_type': 'herb',
+ 'part_used': 'whole plant',
+ 'family': 'Molluginaceae',
+ 'common_name': 'Pathpadagam (පත්පාඩගම්)',
+ 'chemical_name': '4-ethenyl-2-methoxyphenol',
+ 'smiles': 'COC1=C(C=CC(=C1)C=C)O',
+ 'pubchem_cid': '332',
+ 'diseases': []}
+
+def slot(**kwargs):
+    return kwargs
+
+TARGETS = [
+    slot(uniprot_id='P00533', protein_name='Epidermal growth factor receptor', protein_acronym='EGFR', species='Homo sapiens', taxon_id=9606, cell_types=[], best_structure='PDB:1M17', other_structures=[], go_terms=['GO:0005006'], protein_diseases=[], method='literature', score='', source_ref='doi:10.1007/s10529-017-2475-2'),
+    slot(uniprot_id='Q8NGN3', protein_name='Olfactory receptor 10G4', protein_acronym='OR10G4', species='Homo sapiens', taxon_id=9606, cell_types=[], best_structure='AlphaFold:AF-Q8NGN3-F1', other_structures=[], go_terms=['GO:0004984'], protein_diseases=[], method='docking', score=-5.1, source_ref='PMID:40503524'),
+]

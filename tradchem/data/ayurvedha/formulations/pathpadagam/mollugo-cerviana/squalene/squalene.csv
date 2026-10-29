@@ -1,0 +1,2 @@
+medicine,system,plant,plant_type,part_used,family,common_name,chemical_name,smiles,pubchem_cid,diseases,rank,uniprot_id,protein_name,protein_acronym,species,taxon_id,cell_types,best_structure,other_structures,go_terms,protein_diseases,method,score,source_ref
+,Ayurveda,Mollugo cerviana,herb,whole plant,Molluginaceae,Pathpadagam (පත්පාඩගම්),squalene,CC(=CCC/C(=C/CC/C(=C/CC/C=C(/CC/C=C(/CCC=C(C)C)\\C)\\C)/C)/C)C,,,1,Q14534,Squalene monooxygenase,SQLE,Homo sapiens,9606,,PDB:6C6N,,GO:0004506,,literature,,UniProt:Q14534; accessed 2026-10-28

@@ -1,0 +1,2 @@
+medicine,system,plant,plant_type,part_used,family,common_name,chemical_name,smiles,pubchem_cid,diseases,rank,uniprot_id,protein_name,protein_acronym,species,taxon_id,cell_types,best_structure,other_structures,go_terms,protein_diseases,method,score,source_ref
+,Ayurveda,Mollugo cerviana,herb,whole plant,Molluginaceae,Pathpadagam (පත්පාඩගම්),"2,5-di-tert-butylhydroquinone",CC(C)(C)C1=CC(=C(C=C1O)C(C)(C)C)O,2374,,1,P04191,Sarcoplasmic/endoplasmic reticulum calcium ATPase 1,ATP2A1,Oryctolagus cuniculus,9986,,PDB:2AGV,,GO:1990036,,literature,,doi:10.1073/pnas.0506222102

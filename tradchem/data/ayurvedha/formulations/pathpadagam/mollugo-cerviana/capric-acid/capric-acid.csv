@@ -1,0 +1,2 @@
+medicine,system,plant,plant_type,part_used,family,common_name,chemical_name,smiles,pubchem_cid,diseases,rank,uniprot_id,protein_name,protein_acronym,species,taxon_id,cell_types,best_structure,other_structures,go_terms,protein_diseases,method,score,source_ref
+,Ayurveda,Mollugo cerviana,herb,whole plant,Molluginaceae,Pathpadagam (පත්පාඩගම්),decanoic acid,CCCCCCCCCC(=O)O,2969,,1,Q9NQS5,G protein-coupled receptor 84,GPR84,Homo sapiens,9606,,PDB:8J18,,GO:0004930,,literature,,doi:10.1038/s41467-023-38985-6

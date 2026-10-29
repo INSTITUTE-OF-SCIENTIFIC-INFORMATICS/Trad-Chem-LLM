@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+# Data-only contribution; no network calls or computation.
+CHEMICAL = {'medicine': '',
+ 'system': 'Ayurveda',
+ 'plant': 'Mollugo cerviana',
+ 'plant_type': 'herb',
+ 'part_used': 'whole plant',
+ 'family': 'Molluginaceae',
+ 'common_name': 'Pathpadagam (පත්පාඩගම්)',
+ 'chemical_name': 'Diethyl phthalate',
+ 'smiles': 'CCOC(=O)C1=CC=CC=C1C(=O)OCC',
+ 'pubchem_cid': '6781',
+ 'diseases': []}
+
+def slot(**kwargs):
+    return kwargs
+
+TARGETS = [
+    slot(uniprot_id='O75469', protein_name='Pregnane X receptor', protein_acronym='NR1I2', species='Homo sapiens', taxon_id=9606, cell_types=[], best_structure='PDB:5X0R', other_structures=[], go_terms=[], protein_diseases=[], method='docking', score=-6.8, source_ref='PMID:40243467'),
+    slot(uniprot_id='O35627', protein_name='Constitutive androstane receptor', protein_acronym='NR1I3', species='Mus musculus', taxon_id=10090, cell_types=[], best_structure='PDB:1XNX', other_structures=[], go_terms=[], protein_diseases=[], method='docking', score=-6.7, source_ref='PMID:40243467'),
+    slot(uniprot_id='P37231', protein_name='Peroxisome proliferator-activated receptor gamma', protein_acronym='PPARG', species='Homo sapiens', taxon_id=9606, cell_types=[], best_structure='PDB:3ET3', other_structures=[], go_terms=[], protein_diseases=[], method='docking', score=-6.7, source_ref='PMID:40243467'),
+    slot(uniprot_id='P51449', protein_name='RAR-related orphan receptor gamma', protein_acronym='RORC', species='Homo sapiens', taxon_id=9606, cell_types=[], best_structure='PDB:6O3Z', other_structures=[], go_terms=[], protein_diseases=[], method='docking', score=-6.6, source_ref='PMID:40243467'),
+    slot(uniprot_id='P10275', protein_name='Androgen receptor', protein_acronym='AR', species='Homo sapiens', taxon_id=9606, cell_types=[], best_structure='PDB:2PIV', other_structures=[], go_terms=[], protein_diseases=[], method='docking', score=-6.3, source_ref='PMID:40243467'),
+    slot(uniprot_id='Q07869', protein_name='Peroxisome proliferator-activated receptor alpha', protein_acronym='PPARA', species='Homo sapiens', taxon_id=9606, cell_types=[], best_structure='PDB:3VI8', other_structures=[], go_terms=[], protein_diseases=[], method='docking', score=-6.3, source_ref='PMID:40243467'),
+    slot(uniprot_id='Q03181', protein_name='Peroxisome proliferator-activated receptor delta', protein_acronym='PPARD', species='Homo sapiens', taxon_id=9606, cell_types=[], best_structure='PDB:3GZ9', other_structures=[], go_terms=[], protein_diseases=[], method='docking', score=-6.1, source_ref='PMID:40243467'),
+]

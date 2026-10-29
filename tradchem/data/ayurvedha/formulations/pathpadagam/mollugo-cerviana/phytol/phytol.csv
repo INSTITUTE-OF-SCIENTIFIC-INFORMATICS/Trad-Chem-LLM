@@ -1,0 +1,2 @@
+medicine,system,plant,plant_type,part_used,family,common_name,chemical_name,smiles,pubchem_cid,diseases,rank,uniprot_id,protein_name,protein_acronym,species,taxon_id,cell_types,best_structure,other_structures,go_terms,protein_diseases,method,score,source_ref
+,Ayurveda,Mollugo cerviana,herb,whole plant,Molluginaceae,Pathpadagam (පත්පාඩගම්),phytol,CC(C)CCCC(C)CCCC(C)CCC/C(=C/CO)/C,,,1,Q07869,Peroxisome proliferator-activated receptor alpha,PPARA,Homo sapiens,9606,,PDB:1K7L,,GO:0098531,,assay,,PMID:16202384
