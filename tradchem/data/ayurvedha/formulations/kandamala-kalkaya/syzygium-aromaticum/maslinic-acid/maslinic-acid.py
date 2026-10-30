@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+import sqlite3
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[7] / "contributions"))
+from import_data import import_record, DB_DEFAULT  # noqa: E402
+
+CHEMICAL = {
+    "medicine": "kandamala-kalkaya",
+    "system": "Ayurveda",
+    "plant": "Syzygium aromaticum",
+    "plant_type": "tree",
+    "part_used": "flower buds",
+    "family": "Myrtaceae",
+    "common_name": "Clove",
+    "chemical_name": "Maslinic acid",
+    "smiles": "CC1(C)CCC2(C(=O)O)CCC3(C)C(=CCC4C5(C)CC(O)C(O)C(C)(C)C5CCC43C)C2C1",
+    "pubchem_cid": "73659",
+    "diseases": [],
+}
+
+def slot(uniprot_id="", protein_name="", protein_acronym="", species="", taxon_id="",
+         cell_types=(), best_structure="", other_structures=(), go_terms=(),
+         protein_diseases=(), method="", score="", source_ref=""):
+    return dict(uniprot_id=uniprot_id, protein_name=protein_name, protein_acronym=protein_acronym,
+                species=species, taxon_id=taxon_id, cell_types=list(cell_types),
+                best_structure=best_structure, other_structures=list(other_structures),
+                go_terms=list(go_terms), protein_diseases=list(protein_diseases),
+                method=method, score=score, source_ref=source_ref)
+
+TARGETS = [
+    slot(
+        uniprot_id="O60218", protein_name="Aldo-keto reductase family 1 member B10", protein_acronym="AKR1B10",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Found in many tissues. Highly expressed in small intestine, colon and adrenal gland'],
+        best_structure="AlphaFold:AF-O60218-F1", other_structures=[],
+        go_terms=['GO:0005829 cytosol', 'GO:0005576 extracellular region', 'GO:0005764 lysosome', 'GO:0005739 mitochondrion', 'GO:0005886 plasma membrane', 'GO:0008106 alcohol dehydrogenase (NADP+) activity', 'GO:0004032 aldose reductase (NADPH) activity', 'GO:0052650 all-trans-retinol dehydrogenase (NADP+) activity', 'GO:0047655 allyl-alcohol dehydrogenase activity', 'GO:0045550 geranylgeranyl reductase activity', 'GO:0047718 indanol dehydrogenase activity', 'GO:0001758 retinal dehydrogenase (NAD+) activity', 'GO:0110095 cellular detoxification of aldehyde', 'GO:0044597 daunorubicin metabolic process', 'GO:0044598 doxorubicin metabolic process', 'GO:0016488 farnesol catabolic process', 'GO:0001523 retinoid metabolic process'],
+        protein_diseases=[],
+        method="ChEMBL", score=6.22, source_ref="ChEMBL ID: CHEMBL201515"
+    ),
+    slot(
+        uniprot_id="Q8TDU6", protein_name="G protein-coupled bile acid receptor 1", protein_acronym="GPBAR1",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Ubiquitously expressed. Expressed at higher level in spleen and placenta. Expressed at lower level in other tissues. In digestive tissues, it is expressed in stomach, duodenum, ileocecum, ileum, jejunum, ascending colon, transverse colon, descending colon, cecum and liver, but not in esophagus and rectum'],
+        best_structure="AlphaFold:AF-Q8TDU6-F1", other_structures=[],
+        go_terms=['GO:0005737 cytoplasm', 'GO:0005886 plasma membrane', 'GO:0043235 signaling receptor complex', 'GO:0038182 G protein-coupled bile acid receptor activity', 'GO:0038184 adenylate cyclase-activating G protein-coupled bile acid receptor signaling pathway', 'GO:1903413 cellular response to bile acid', 'GO:0097009 energy homeostasis', 'GO:1904056 positive regulation of cholangiocyte proliferation', 'GO:0070374 positive regulation of ERK1 and ERK2 cascade'],
+        protein_diseases=[],
+        method="ChEMBL", score=5.43, source_ref="ChEMBL ID: CHEMBL201515"
+    ),
+    slot(
+        uniprot_id="P18031", protein_name="Tyrosine-protein phosphatase non-receptor type 1", protein_acronym="PTPN1",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Expressed in keratinocytes (at protein level)'],
+        best_structure="AlphaFold:AF-P18031-F1", other_structures=[],
+        go_terms=['GO:0005737 cytoplasm', 'GO:0098554 cytoplasmic side of endoplasmic reticulum membrane', 'GO:0005829 cytosol', 'GO:0005769 early endosome', 'GO:0005783 endoplasmic reticulum', 'GO:0005789 endoplasmic reticulum membrane', 'GO:0031904 endosome lumen', 'GO:0098978 glutamatergic synapse', 'GO:0030061 mitochondrial crista', 'GO:0005759 mitochondrial matrix', 'GO:0098794 postsynapse', 'GO:0032991 protein-containing complex', 'GO:0097443 sorting endosome', 'GO:0045296 cadherin binding', 'GO:0019899 enzyme binding', 'GO:0046875 ephrin receptor binding', 'GO:0005158 insulin receptor binding', 'GO:0004726 non-membrane spanning protein tyrosine phosphatase activity', 'GO:0004721 phosphoprotein phosphatase activity', 'GO:0019901 protein kinase binding', 'GO:0051721 protein phosphatase 2A binding', 'GO:0004725 protein tyrosine phosphatase activity', 'GO:0030971 receptor tyrosine kinase binding', 'GO:0003723 RNA binding', 'GO:0008270 zinc ion binding', 'GO:0030036 actin cytoskeleton organization', 'GO:1904385 cellular response to angiotensin', 'GO:0044344 cellular response to fibroblast growth factor stimulus', 'GO:0071456 cellular response to hypoxia', 'GO:0032869 cellular response to insulin stimulus', 'GO:1990090 cellular response to nerve growth factor stimulus', 'GO:0071732 cellular response to nitric oxide', 'GO:0036120 cellular response to platelet-derived growth factor stimulus', 'GO:0034620 cellular response to unfolded protein', 'GO:0030968 endoplasmic reticulum unfolded protein response', 'GO:0060397 growth hormone receptor signaling pathway via JAK-STAT', 'GO:0038020 insulin receptor recycling', 'GO:0036498 IRE1-mediated unfolded protein response', 'GO:0008285 negative regulation of cell population proliferation', 'GO:0010812 negative regulation of cell-substrate adhesion', 'GO:1902236 negative regulation of endoplasmic reticulum stress-induced intrinsic apoptotic signaling pathway', 'GO:0070373 negative regulation of ERK1 and ERK2 cascade', 'GO:0046627 negative regulation of insulin receptor signaling pathway', 'GO:0043407 negative regulation of MAP kinase activity', 'GO:0010977 negative regulation of neuron projection development', 'GO:1903898 negative regulation of PERK-mediated unfolded protein response', 'GO:0051898 negative regulation of phosphatidylinositol 3-kinase/protein kinase B signal transduction', 'GO:0009968 negative regulation of signal transduction', 'GO:1904753 negative regulation of vascular associated smooth muscle cell migration', 'GO:0030948 negative regulation of vascular endothelial growth factor receptor signaling pathway', 'GO:0035335 peptidyl-tyrosine dephosphorylation', 'GO:0035791 platelet-derived growth factor receptor-beta signaling pathway', 'GO:0010666 positive regulation of cardiac muscle cell apoptotic process', 'GO:2000353 positive regulation of endothelial cell apoptotic process', 'GO:0010460 positive regulation of heart rate', 'GO:1903896 positive regulation of IRE1-mediated unfolded protein response', 'GO:0046330 positive regulation of JNK cascade', 'GO:2000646 positive regulation of receptor catabolic process', 'GO:0003084 positive regulation of systemic arterial blood pressure', 'GO:0030100 regulation of endocytosis', 'GO:1902202 regulation of hepatocyte growth factor receptor signaling pathway', 'GO:0033157 regulation of intracellular protein transport', 'GO:0150052 regulation of postsynapse assembly', 'GO:0030162 regulation of proteolysis', 'GO:0009966 regulation of signal transduction', 'GO:0060338 regulation of type I interferon-mediated signaling pathway', 'GO:0031667 response to nutrient levels', 'GO:0097706 vascular endothelial cell response to oscillatory fluid shear stress'],
+        protein_diseases=[],
+        method="ChEMBL", score=5.23, source_ref="ChEMBL ID: CHEMBL201515"
+    ),
+    slot(
+        uniprot_id="P17706", protein_name="Tyrosine-protein phosphatase non-receptor type 2", protein_acronym="PTPN2",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Ubiquitously expressed. Isoform 2 is probably the major isoform. Isoform 1 is expressed in T-cells and in placenta'],
+        best_structure="AlphaFold:AF-P17706-F1", other_structures=[],
+        go_terms=['GO:0005737 cytoplasm', 'GO:0005829 cytosol', 'GO:0005783 endoplasmic reticulum', 'GO:0005793 endoplasmic reticulum-Golgi intermediate compartment', 'GO:0005654 nucleoplasm', 'GO:0005634 nucleus', 'GO:0005886 plasma membrane', 'GO:0005178 integrin binding', 'GO:0004726 non-membrane spanning protein tyrosine phosphatase activity', 'GO:0019901 protein kinase binding', 'GO:0004725 protein tyrosine phosphatase activity', 'GO:0030971 receptor tyrosine kinase binding', 'GO:0019905 syntaxin binding', 'GO:0030183 B cell differentiation', 'GO:0030218 erythrocyte differentiation', 'GO:0042593 glucose homeostasis', 'GO:0008286 insulin receptor signaling pathway', 'GO:0008285 negative regulation of cell population proliferation', 'GO:0050922 negative regulation of chemotaxis', 'GO:0042059 negative regulation of epidermal growth factor receptor signaling pathway', 'GO:0070373 negative regulation of ERK1 and ERK2 cascade', 'GO:0050728 negative regulation of inflammatory response', 'GO:0046627 negative regulation of insulin receptor signaling pathway', 'GO:1902206 negative regulation of interleukin-2-mediated signaling pathway', 'GO:1902215 negative regulation of interleukin-4-mediated signaling pathway', 'GO:0070104 negative regulation of interleukin-6-mediated signaling pathway', 'GO:0010888 negative regulation of lipid storage', 'GO:1902227 negative regulation of macrophage colony-stimulating factor signaling pathway', 'GO:0045650 negative regulation of macrophage differentiation', 'GO:2000587 negative regulation of platelet-derived growth factor receptor-beta signaling pathway', 'GO:1902233 negative regulation of positive thymic T cell selection', 'GO:0046426 negative regulation of receptor signaling pathway via JAK-STAT', 'GO:0050860 negative regulation of T cell receptor signaling pathway', 'GO:0010804 negative regulation of tumor necrosis factor-mediated signaling pathway', 'GO:0060339 negative regulation of type I interferon-mediated signaling pathway', 'GO:0060336 negative regulation of type II interferon-mediated signaling pathway', 'GO:0042532 negative regulation of tyrosine phosphorylation of STAT protein', 'GO:0035335 peptidyl-tyrosine dephosphorylation', 'GO:0045722 positive regulation of gluconeogenesis', 'GO:1902202 regulation of hepatocyte growth factor receptor signaling pathway', 'GO:0060334 regulation of type II interferon-mediated signaling pathway', 'GO:0030217 T cell differentiation'],
+        protein_diseases=[],
+        method="ChEMBL", score=4.71, source_ref="ChEMBL ID: CHEMBL201515"
+    ),
+    slot(),
+    slot(),
+    slot(),
+    slot(),
+    slot(),
+    slot(),
+]
+
+def main():
+    record = dict(CHEMICAL, targets=TARGETS)
+    conn = sqlite3.connect(DB_DEFAULT)
+    conn.execute("PRAGMA foreign_keys=ON")
+    try:
+        conn.execute("SAVEPOINT chem")
+        import_record(conn, record)
+        conn.execute("RELEASE chem")
+        conn.commit()
+        n = sum(1 for t in TARGETS if t["uniprot_id"])
+        print(f"Saved {CHEMICAL['chemical_name']} with {n} target protein(s).")
+    except Exception as e:
+        conn.execute("ROLLBACK TO chem")
+        conn.execute("RELEASE chem")
+        print(f"Nothing saved for {CHEMICAL['chemical_name']}: {e}")
+    finally:
+        conn.close()
+
+if __name__ == "__main__":
+    main()

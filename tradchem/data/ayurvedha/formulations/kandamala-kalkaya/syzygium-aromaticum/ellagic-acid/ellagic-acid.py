@@ -1,0 +1,144 @@
+#!/usr/bin/env python3
+import sqlite3
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[7] / "contributions"))
+from import_data import import_record, DB_DEFAULT  # noqa: E402
+
+CHEMICAL = {
+    "medicine": "kandamala-kalkaya",
+    "system": "Ayurveda",
+    "plant": "Syzygium aromaticum",
+    "plant_type": "tree",
+    "part_used": "flower buds",
+    "family": "Myrtaceae",
+    "common_name": "Clove",
+    "chemical_name": "Ellagic acid",
+    "smiles": "O=c1oc2c(O)c(O)cc3c(=O)oc4c(O)c(O)cc1c4c23",
+    "pubchem_cid": "5281855",
+    "diseases": [],
+}
+
+def slot(uniprot_id="", protein_name="", protein_acronym="", species="", taxon_id="",
+         cell_types=(), best_structure="", other_structures=(), go_terms=(),
+         protein_diseases=(), method="", score="", source_ref=""):
+    return dict(uniprot_id=uniprot_id, protein_name=protein_name, protein_acronym=protein_acronym,
+                species=species, taxon_id=taxon_id, cell_types=list(cell_types),
+                best_structure=best_structure, other_structures=list(other_structures),
+                go_terms=list(go_terms), protein_diseases=list(protein_diseases),
+                method=method, score=score, source_ref=source_ref)
+
+TARGETS = [
+    slot(
+        uniprot_id="P27695", protein_name="DNA repair nuclease/redox regulator APEX1", protein_acronym="APEX1",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-P27695-F1", other_structures=[],
+        go_terms=['GO:0000785 chromatin', 'GO:0000781 chromosome, telomeric region', 'GO:0005737 cytoplasm', 'GO:0005783 endoplasmic reticulum', 'GO:0005739 mitochondrion', 'GO:0016607 nuclear speck', 'GO:0005730 nucleolus', 'GO:0005654 nucleoplasm', 'GO:0005634 nucleus', 'GO:0048471 perinuclear region of cytoplasm', 'GO:0005840 ribosome', "GO:0008408 3'-5' exonuclease activity", "GO:0008296 3'-5'-DNA exonuclease activity", 'GO:0031490 chromatin DNA binding', 'GO:0052720 class II DNA-(apurinic or apyrimidinic site) endonuclease activity', 'GO:0003684 damaged DNA binding', 'GO:0033892 deoxyribonuclease (pyrimidine dimer) activity', 'GO:0003677 DNA binding', 'GO:0004520 DNA endonuclease activity', 'GO:0140431 DNA-(abasic site) binding', 'GO:0003906 DNA-(apurinic or apyrimidinic site) endonuclease activity', "GO:0008311 double-stranded DNA 3'-5' DNA exonuclease activity", 'GO:0008309 double-stranded DNA exodeoxyribonuclease activity', 'GO:0003691 double-stranded telomeric DNA binding', 'GO:0004519 endonuclease activity', 'GO:0046872 metal ion binding', 'GO:0016491 oxidoreductase activity', "GO:0090580 phosphodiesterase activity, acting on 3'-phosphoglycolate-terminated DNA strands", 'GO:0004528 phosphodiesterase I activity', 'GO:0008081 phosphoric diester hydrolase activity', 'GO:0003723 RNA binding', 'GO:0004523 RNA-DNA hybrid ribonuclease activity', 'GO:0003713 transcription coactivator activity', 'GO:0003714 transcription corepressor activity', 'GO:0004844 uracil DNA N-glycosylase activity', 'GO:0006284 base-excision repair', 'GO:0006287 base-excision repair, gap-filling', 'GO:0006308 DNA catabolic process', 'GO:0006281 DNA repair', 'GO:0008626 granzyme-mediated apoptotic signaling pathway', 'GO:0044029 positive regulation of gene expression via chromosomal CpG island demethylation', 'GO:0045944 positive regulation of transcription by RNA polymerase II', 'GO:0042981 regulation of apoptotic process', 'GO:0043488 regulation of mRNA stability', 'GO:0000723 telomere maintenance', 'GO:0097698 telomere maintenance via base-excision repair'],
+        protein_diseases=[],
+        method="ChEMBL", score=7.85, source_ref="ChEMBL ID: CHEMBL6246"
+    ),
+    slot(
+        uniprot_id="P68400", protein_name="Casein kinase II subunit alpha", protein_acronym="CSNK2A1",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Expressed in gastric carcinoma tissue and the expression gradually increases with the progression of the carcinoma (at protein level)'],
+        best_structure="AlphaFold:AF-P68400-F1", other_structures=[],
+        go_terms=['GO:0000785 chromatin', 'GO:0005829 cytosol', 'GO:0005654 nucleoplasm', 'GO:0005634 nucleus', 'GO:0005886 plasma membrane', 'GO:0016605 PML body', 'GO:0035102 PRC1 complex', 'GO:0005956 protein kinase CK2 complex', 'GO:0070822 Sin3-type complex', 'GO:0005524 ATP binding', 'GO:0051879 Hsp90 protein binding', 'GO:0042802 identical protein binding', 'GO:0016301 kinase activity', 'GO:0106310 protein serine kinase activity', 'GO:0004674 protein serine/threonine kinase activity', 'GO:0006974 DNA damage response', 'GO:0006302 double-strand break repair', 'GO:0031507 heterochromatin formation', 'GO:2001234 negative regulation of apoptotic signaling pathway', 'GO:2000042 negative regulation of double-strand break repair via homologous recombination', 'GO:0032435 negative regulation of proteasomal ubiquitin-dependent protein catabolic process', 'GO:1901797 negative regulation of signal transduction by p53 class mediator', 'GO:0017148 negative regulation of translation', 'GO:0018105 peptidyl-serine phosphorylation', 'GO:1905337 positive regulation of aggrephagy', 'GO:0030307 positive regulation of cell growth', 'GO:0008284 positive regulation of cell population proliferation', 'GO:0045893 positive regulation of DNA-templated transcription', 'GO:0045732 positive regulation of protein catabolic process', 'GO:0030177 positive regulation of Wnt signaling pathway', 'GO:0006457 protein folding', 'GO:0050821 protein stabilization', 'GO:1905818 regulation of chromosome separation', 'GO:0007165 signal transduction', 'GO:0075342 symbiont-mediated disruption of host cell PML body'],
+        protein_diseases=['Okur-Chung neurodevelopmental syndrome'],
+        method="ChEMBL", score=7.7, source_ref="ChEMBL ID: CHEMBL6246"
+    ),
+    slot(
+        uniprot_id="P30613", protein_name="Pyruvate kinase PKLR", protein_acronym="PKLR",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-P30613-F1", other_structures=[],
+        go_terms=['GO:0005829 cytosol', 'GO:0070062 extracellular exosome', 'GO:1902912 pyruvate kinase complex', 'GO:0000287 magnesium ion binding', 'GO:0048029 monosaccharide binding', 'GO:0030955 potassium ion binding', 'GO:0004743 pyruvate kinase activity', 'GO:0061621 canonical glycolysis', 'GO:0071872 cellular response to epinephrine stimulus', 'GO:0032869 cellular response to insulin stimulus', 'GO:0006096 glycolytic process', 'GO:0042866 pyruvate biosynthetic process', 'GO:0033198 response to ATP', 'GO:0051591 response to cAMP', 'GO:0009749 response to glucose', 'GO:0001666 response to hypoxia', 'GO:0010038 response to metal ion', 'GO:0007584 response to nutrient'],
+        protein_diseases=['Pyruvate kinase hyperactivity', 'Anemia, congenital, non-spherocytic hemolytic, 2'],
+        method="ChEMBL", score=7.5, source_ref="ChEMBL ID: CHEMBL6246"
+    ),
+    slot(
+        uniprot_id="P67870", protein_name="Casein kinase II subunit beta", protein_acronym="CSNK2B",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-P67870-F1", other_structures=[],
+        go_terms=['GO:0000785 chromatin', 'GO:0005737 cytoplasm', 'GO:0005829 cytosol', 'GO:0070062 extracellular exosome', 'GO:0005576 extracellular region', 'GO:0001650 fibrillar center', 'GO:1904813 ficolin-1-rich granule lumen', 'GO:0005654 nucleoplasm', 'GO:0005634 nucleus', 'GO:0016605 PML body', 'GO:0035102 PRC1 complex', 'GO:0005956 protein kinase CK2 complex', 'GO:0034774 secretory granule lumen', 'GO:0003682 chromatin binding', 'GO:0042802 identical protein binding', 'GO:0019904 protein domain specific binding', 'GO:0019887 protein kinase regulator activity', 'GO:0004674 protein serine/threonine kinase activity', 'GO:0030674 protein-macromolecule adaptor activity', 'GO:0061629 RNA polymerase II-specific DNA-binding transcription factor binding', 'GO:0005102 signaling receptor binding', 'GO:0033211 adiponectin-activated signaling pathway', 'GO:0061154 endothelial tube morphogenesis', 'GO:0031507 heterochromatin formation', 'GO:0043537 negative regulation of blood vessel endothelial cell migration', 'GO:0008285 negative regulation of cell population proliferation', 'GO:0032435 negative regulation of proteasomal ubiquitin-dependent protein catabolic process', 'GO:1903901 negative regulation of viral life cycle', 'GO:0032927 positive regulation of activin receptor signaling pathway', 'GO:0045893 positive regulation of DNA-templated transcription', 'GO:0060391 positive regulation of SMAD protein signal transduction', 'GO:0065003 protein-containing complex assembly', 'GO:0007165 signal transduction', 'GO:0075342 symbiont-mediated disruption of host cell PML body'],
+        protein_diseases=['Poirier-Bienvenu neurodevelopmental syndrome'],
+        method="ChEMBL", score=7.4, source_ref="ChEMBL ID: CHEMBL6246"
+    ),
+    slot(
+        uniprot_id="Q9NUW8", protein_name="Tyrosyl-DNA phosphodiesterase 1", protein_acronym="TDP1",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Ubiquitously expressed. Similar expression throughout the central nervous system (whole brain, amygdala, caudate nucleus, cerebellum, cerebral cortex, frontal lobe, hippocampus, medulla oblongata, occipital lobe, putamen, substantia nigra, temporal lobe, thalamus, nucleus accumbens and spinal cord) and increased expression in testis and thymus'],
+        best_structure="AlphaFold:AF-Q9NUW8-F1", other_structures=[],
+        go_terms=['GO:0005737 cytoplasm', 'GO:0070421 DNA ligase III-XRCC1 complex', 'GO:0005654 nucleoplasm', 'GO:0005634 nucleus', 'GO:0090734 site of DNA damage', "GO:0017005 3'-tyrosyl-DNA phosphodiesterase activity", 'GO:0003690 double-stranded DNA binding', 'GO:0003697 single-stranded DNA binding', 'GO:0006281 DNA repair', 'GO:0006302 double-strand break repair', 'GO:0006282 regulation of DNA repair', 'GO:0000012 single strand break repair'],
+        protein_diseases=['Spinocerebellar ataxia, autosomal recessive, with axonal neuropathy 1'],
+        method="ChEMBL", score=7.3, source_ref="ChEMBL ID: CHEMBL6246"
+    ),
+    slot(
+        uniprot_id="Q9Y253", protein_name="DNA polymerase eta", protein_acronym="POLH",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-Q9Y253-F1", other_structures=[],
+        go_terms=['GO:0005654 nucleoplasm', 'GO:0005634 nucleus', 'GO:0005657 replication fork', 'GO:0035861 site of double-strand break', 'GO:0003684 damaged DNA binding', 'GO:0034061 DNA polymerase activity', 'GO:0003887 DNA-directed DNA polymerase activity', 'GO:0006281 DNA repair', 'GO:0000731 DNA synthesis involved in DNA repair', 'GO:0070987 error-free translesion synthesis', 'GO:0006282 regulation of DNA repair', 'GO:0010225 response to UV-C', 'GO:0019985 translesion synthesis'],
+        protein_diseases=['Xeroderma pigmentosum variant type'],
+        method="ChEMBL", score=7.21, source_ref="ChEMBL ID: CHEMBL6246"
+    ),
+    slot(
+        uniprot_id="Q9UNA4", protein_name="DNA polymerase iota", protein_acronym="POLI",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Ubiquitous. Highly expressed in testis'],
+        best_structure="AlphaFold:AF-Q9UNA4-F1", other_structures=[],
+        go_terms=['GO:0016607 nuclear speck', 'GO:0005654 nucleoplasm', 'GO:0005634 nucleus', 'GO:0003684 damaged DNA binding', 'GO:0034061 DNA polymerase activity', 'GO:0003887 DNA-directed DNA polymerase activity', 'GO:0006281 DNA repair', 'GO:0042276 error-prone translesion synthesis', 'GO:0019985 translesion synthesis'],
+        protein_diseases=[],
+        method="ChEMBL", score=7.21, source_ref="ChEMBL ID: CHEMBL6246"
+    ),
+    slot(
+        uniprot_id="Q9HC97", protein_name="G protein-coupled receptor 35", protein_acronym="GPR35",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Predominantly expressed in immune and gastrointestinal tissues'],
+        best_structure="AlphaFold:AF-Q9HC97-F1", other_structures=[],
+        go_terms=['GO:0005741 mitochondrial outer membrane', 'GO:0005886 plasma membrane', 'GO:0016494 C-X-C chemokine receptor activity', 'GO:0004950 chemokine receptor activity', 'GO:0004930 G protein-coupled receptor activity', 'GO:0007193 adenylate cyclase-inhibiting G protein-coupled receptor signaling pathway', 'GO:0070098 chemokine-mediated signaling pathway', 'GO:0007010 cytoskeleton organization', 'GO:0007186 G protein-coupled receptor signaling pathway', 'GO:0061756 leukocyte adhesion to vascular endothelial cell', 'GO:0002548 monocyte chemotaxis', 'GO:0010667 negative regulation of cardiac muscle cell apoptotic process', 'GO:1901386 negative regulation of voltage-gated calcium channel activity', 'GO:0030593 neutrophil chemotaxis', 'GO:0007204 positive regulation of cytosolic calcium ion concentration', 'GO:0002931 response to ischemia'],
+        protein_diseases=[],
+        method="ChEMBL", score=7.0, source_ref="ChEMBL ID: CHEMBL6246"
+    ),
+    slot(
+        uniprot_id="P46063", protein_name="ATP-dependent DNA helicase Q1", protein_acronym="RECQL",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['High expression in heart, lung, skeletal muscle and kidney, low expression in brain'],
+        best_structure="AlphaFold:AF-P46063-F1", other_structures=[],
+        go_terms=['GO:0005694 chromosome', 'GO:0005737 cytoplasm', 'GO:0016020 membrane', 'GO:0005654 nucleoplasm', 'GO:0005634 nucleus', "GO:0043138 3'-5' DNA helicase activity", 'GO:0005524 ATP binding', 'GO:0016887 ATP hydrolysis activity', 'GO:0003678 DNA helicase activity', 'GO:1990814 DNA/DNA annealing activity', 'GO:0036121 double-stranded DNA helicase activity', 'GO:0006310 DNA recombination', 'GO:0006281 DNA repair', 'GO:0006260 DNA replication', 'GO:0031297 replication fork processing'],
+        protein_diseases=['RECON progeroid syndrome'],
+        method="ChEMBL", score=6.9, source_ref="ChEMBL ID: CHEMBL6246"
+    ),
+    slot(
+        uniprot_id="P15428", protein_name="15-hydroxyprostaglandin dehydrogenase [NAD(+)]", protein_acronym="HPGD",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Detected in colon epithelium (at protein level)'],
+        best_structure="AlphaFold:AF-P15428-F1", other_structures=[],
+        go_terms=['GO:0016323 basolateral plasma membrane', 'GO:0005737 cytoplasm', 'GO:0005829 cytosol', 'GO:0070062 extracellular exosome', 'GO:0047034 15-hydroxyicosatetraenoate dehydrogenase activity', 'GO:0016404 15-hydroxyprostaglandin dehydrogenase (NAD+) activity', 'GO:0042802 identical protein binding', 'GO:0051287 NAD binding', 'GO:0070403 NAD+ binding', 'GO:0016616 oxidoreductase activity, acting on the CH-OH group of donors, NAD or NADP as acceptor', 'GO:0004957 prostaglandin E receptor activity', 'GO:0097070 ductus arteriosus closure', 'GO:0007565 female pregnancy', 'GO:0001822 kidney development', 'GO:2001301 lipoxin biosynthetic process', 'GO:0019372 lipoxygenase pathway', 'GO:0045786 negative regulation of cell cycle', 'GO:0030728 ovulation', 'GO:0007567 parturition', 'GO:0043065 positive regulation of apoptotic process', 'GO:1904707 positive regulation of vascular associated smooth muscle cell proliferation', 'GO:1905344 prostaglandin catabolic process', 'GO:0006693 prostaglandin metabolic process', 'GO:1905828 regulation of prostaglandin catabolic process', 'GO:0032355 response to estradiol', 'GO:0045471 response to ethanol', 'GO:0032496 response to lipopolysaccharide', 'GO:0070493 thrombin-activated receptor signaling pathway', 'GO:0007179 transforming growth factor beta receptor signaling pathway'],
+        protein_diseases=['Hypertrophic osteoarthropathy, primary, autosomal recessive, 1', 'Cranioosteoarthropathy', 'Digital clubbing, isolated congenital'],
+        method="ChEMBL", score=6.9, source_ref="ChEMBL ID: CHEMBL6246"
+    ),
+]
+
+def main():
+    record = dict(CHEMICAL, targets=TARGETS)
+    conn = sqlite3.connect(DB_DEFAULT)
+    conn.execute("PRAGMA foreign_keys=ON")
+    try:
+        conn.execute("SAVEPOINT chem")
+        import_record(conn, record)
+        conn.execute("RELEASE chem")
+        conn.commit()
+        n = sum(1 for t in TARGETS if t["uniprot_id"])
+        print(f"Saved {CHEMICAL['chemical_name']} with {n} target protein(s).")
+    except Exception as e:
+        conn.execute("ROLLBACK TO chem")
+        conn.execute("RELEASE chem")
+        print(f"Nothing saved for {CHEMICAL['chemical_name']}: {e}")
+    finally:
+        conn.close()
+
+if __name__ == "__main__":
+    main()

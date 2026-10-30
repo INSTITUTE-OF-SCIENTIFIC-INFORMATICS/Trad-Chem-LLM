@@ -1,0 +1,144 @@
+#!/usr/bin/env python3
+import sqlite3
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[7] / "contributions"))
+from import_data import import_record, DB_DEFAULT  # noqa: E402
+
+CHEMICAL = {
+    "medicine": "kandamala-kalkaya",
+    "system": "Ayurveda",
+    "plant": "Syzygium aromaticum",
+    "plant_type": "tree",
+    "part_used": "flower buds",
+    "family": "Myrtaceae",
+    "common_name": "Clove",
+    "chemical_name": "Gallic acid",
+    "smiles": "O=C(O)c1cc(O)c(O)c(O)c1",
+    "pubchem_cid": "370",
+    "diseases": [],
+}
+
+def slot(uniprot_id="", protein_name="", protein_acronym="", species="", taxon_id="",
+         cell_types=(), best_structure="", other_structures=(), go_terms=(),
+         protein_diseases=(), method="", score="", source_ref=""):
+    return dict(uniprot_id=uniprot_id, protein_name=protein_name, protein_acronym=protein_acronym,
+                species=species, taxon_id=taxon_id, cell_types=list(cell_types),
+                best_structure=best_structure, other_structures=list(other_structures),
+                go_terms=list(go_terms), protein_diseases=list(protein_diseases),
+                method=method, score=score, source_ref=source_ref)
+
+TARGETS = [
+    slot(
+        uniprot_id="Q99714", protein_name="3-hydroxyacyl-CoA dehydrogenase type-2", protein_acronym="HSD17B10",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Ubiquitously expressed in normal tissues but is overexpressed in neurons affected in AD'],
+        best_structure="AlphaFold:AF-Q99714-F1", other_structures=[],
+        go_terms=['GO:1902494 catalytic complex', 'GO:0005737 cytoplasm', 'GO:1902555 endoribonuclease complex', 'GO:0005759 mitochondrial matrix', 'GO:0042645 mitochondrial nucleoid', 'GO:0030678 mitochondrial ribonuclease P complex', 'GO:0005739 mitochondrion', 'GO:0005886 plasma membrane', 'GO:0043527 tRNA methyltransferase complex', 'GO:0003857 (3S)-3-hydroxyacyl-CoA dehydrogenase (NAD+) activity', 'GO:0044594 17-beta-hydroxysteroid dehydrogenase (NAD+) activity', 'GO:0047015 3-hydroxy-2-methylbutyryl-CoA dehydrogenase activity', 'GO:0047044 androstan-3-alpha,17-beta-diol dehydrogenase (NAD+) activity', 'GO:0160241 cardiolipin dehydrogenase (NAD+) activity', 'GO:0106281 chenodeoxycholate 7-alpha-dehydrogenase (NAD+) activity', 'GO:0008709 cholate 7-alpha-dehydrogenase (NAD+) activity', 'GO:0004303 estradiol 17-beta-dehydrogenase [NAD(P)+] activity', 'GO:0106282 isoursodeoxycholate 7-beta-dehydrogenase (NAD+) activity', 'GO:0016509 long-chain (3S)-3-hydroxyacyl-CoA dehydrogenase (NAD+) activity', 'GO:0003723 RNA binding', 'GO:0047035 testosterone dehydrogenase (NAD+) activity', 'GO:0000049 tRNA binding', 'GO:0106283 ursodeoxycholate 7-beta-dehydrogenase (NAD+) activity', 'GO:0008209 androgen metabolic process', 'GO:0006699 bile acid biosynthetic process', 'GO:0062173 brexanolone metabolic process', 'GO:0008207 C21-steroid hormone metabolic process', 'GO:0008210 estrogen metabolic process', 'GO:0006635 fatty acid beta-oxidation', 'GO:0006631 fatty acid metabolic process', 'GO:0006550 L-isoleucine catabolic process', 'GO:0006629 lipid metabolic process', "GO:1990180 mitochondrial tRNA 3'-end processing", "GO:0097745 mitochondrial tRNA 5'-end processing", 'GO:0070901 mitochondrial tRNA methylation', 'GO:0007005 mitochondrion organization', 'GO:0051289 protein homotetramerization', "GO:0042780 tRNA 3'-end processing", "GO:0001680 tRNA 3'-terminal CCA addition"],
+        protein_diseases=['HSD10 mitochondrial disease'],
+        method="ChEMBL", score=7.3, source_ref="ChEMBL ID: CHEMBL288114"
+    ),
+    slot(
+        uniprot_id="Q11130", protein_name="Alpha-(1,3)-fucosyltransferase 7", protein_acronym="FUT7",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Leukocytic/myeloid lineage cells'],
+        best_structure="AlphaFold:AF-Q11130-F1", other_structures=[],
+        go_terms=['GO:0005794 Golgi apparatus', 'GO:0032580 Golgi cisterna membrane', 'GO:0000139 Golgi membrane', 'GO:0016020 membrane', 'GO:0005802 trans-Golgi network', 'GO:0017083 4-galactosyl-N-acetylglucosaminide 3-alpha-L-fucosyltransferase activity', 'GO:0046920 alpha-(1->3)-fucosyltransferase activity', 'GO:0008417 fucosyltransferase activity', 'GO:0006672 ceramide metabolic process', 'GO:0007566 embryo implantation', 'GO:0009101 glycoprotein biosynthetic process', 'GO:0006954 inflammatory response', 'GO:0042355 L-fucose catabolic process', 'GO:0002523 leukocyte migration involved in inflammatory response', 'GO:0097022 lymphocyte migration into lymph node', 'GO:0009312 oligosaccharide biosynthetic process', 'GO:0045785 positive regulation of cell adhesion', 'GO:0022409 positive regulation of cell-cell adhesion', 'GO:1904996 positive regulation of leukocyte adhesion to vascular endothelial cell', 'GO:1903238 positive regulation of leukocyte tethering or rolling', 'GO:1902624 positive regulation of neutrophil migration', 'GO:0060353 regulation of cell adhesion molecule production', 'GO:0022407 regulation of cell-cell adhesion', 'GO:0046626 regulation of insulin receptor signaling pathway', 'GO:1903037 regulation of leukocyte cell-cell adhesion', 'GO:1903236 regulation of leukocyte tethering or rolling', 'GO:0001807 regulation of type IV hypersensitivity'],
+        protein_diseases=[],
+        method="ChEMBL", score=7.22, source_ref="ChEMBL ID: CHEMBL288114"
+    ),
+    slot(
+        uniprot_id="P02545", protein_name="Prelamin-A/C", protein_acronym="LMNA",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['In the arteries, prelamin-A/C accumulation is not observed in young healthy vessels but is prevalent in medial vascular smooth muscle cells (VSMCs) from aged individuals and in atherosclerotic lesions, where it often colocalizes with senescent and degenerate VSMCs. Prelamin-A/C expression increases with age and disease. In normal aging, the accumulation of prelamin-A/C is caused in part by the down-regulation of ZMPSTE24/FACE1 in response to oxidative stress'],
+        best_structure="AlphaFold:AF-P02545-F1", other_structures=[],
+        go_terms=['GO:0005829 cytosol', 'GO:0005882 intermediate filament', 'GO:0005638 lamin filament', 'GO:0005635 nuclear envelope', 'GO:0005652 nuclear lamina', 'GO:0016363 nuclear matrix', 'GO:0031965 nuclear membrane', 'GO:0016607 nuclear speck', 'GO:0005654 nucleoplasm', 'GO:0005634 nucleus', 'GO:0048471 perinuclear region of cytoplasm', 'GO:0035861 site of double-strand break', 'GO:0042802 identical protein binding', 'GO:0005200 structural constituent of cytoskeleton', 'GO:0160123 structural constituent of nuclear lamina', 'GO:0005198 structural molecule activity', 'GO:0071456 cellular response to hypoxia', 'GO:0090398 cellular senescence', 'GO:1990683 DNA double-strand break attachment to nuclear envelope', 'GO:0006303 double-strand break repair via nonhomologous end joining', 'GO:0030951 establishment or maintenance of microtubule cytoskeleton polarity', 'GO:0031507 heterochromatin formation', 'GO:0008104 intracellular protein localization', 'GO:0007517 muscle organ development', 'GO:1903243 negative regulation of cardiac muscle hypertrophy in response to stress', 'GO:0008285 negative regulation of cell population proliferation', 'GO:0006998 nuclear envelope organization', 'GO:0007097 nuclear migration', 'GO:0051664 nuclear pore localization', 'GO:0090435 protein localization to nuclear envelope', 'GO:0034504 protein localization to nucleus', 'GO:0030334 regulation of cell migration', 'GO:0032204 regulation of telomere maintenance'],
+        protein_diseases=['Emery-Dreifuss muscular dystrophy 2, autosomal dominant', 'Emery-Dreifuss muscular dystrophy 3, autosomal recessive', 'Cardiomyopathy, dilated, 1A', 'Lipodystrophy, familial partial, 2', 'Charcot-Marie-Tooth disease, axonal, type 2B1', 'Hutchinson-Gilford progeria syndrome', 'Cardiomyopathy, dilated, with hypergonadotropic hypogonadism', 'Mandibuloacral dysplasia with type A lipodystrophy', 'Restrictive dermopathy 2', 'Heart-hand syndrome Slovenian type', 'Muscular dystrophy congenital LMNA-related'],
+        method="ChEMBL", score=6.55, source_ref="ChEMBL ID: CHEMBL288114"
+    ),
+    slot(
+        uniprot_id="B2RXH2", protein_name="Lysine-specific demethylase 4E", protein_acronym="KDM4E",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-B2RXH2-F1", other_structures=[],
+        go_terms=['GO:0000785 chromatin', 'GO:0005654 nucleoplasm', 'GO:0005634 nucleus', 'GO:0140760 histone H3K56me2/H3K56me3 demethylase activity', 'GO:0032454 histone H3K9 demethylase activity', 'GO:0140684 histone H3K9me2/H3K9me3 demethylase activity'],
+        protein_diseases=[],
+        method="ChEMBL", score=6.45, source_ref="ChEMBL ID: CHEMBL288114"
+    ),
+    slot(
+        uniprot_id="Q10471", protein_name="Polypeptide N-acetylgalactosaminyltransferase 2", protein_acronym="GALNT2",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Detected in urine (at protein level) (PubMed:37453717). Widely expressed'],
+        best_structure="AlphaFold:AF-Q10471-F1", other_structures=[],
+        go_terms=['GO:0005789 endoplasmic reticulum membrane', 'GO:0005576 extracellular region', 'GO:0005794 Golgi apparatus', 'GO:0032580 Golgi cisterna membrane', 'GO:0000139 Golgi membrane', 'GO:0005795 Golgi stack', 'GO:0016020 membrane', 'GO:0048471 perinuclear region of cytoplasm', 'GO:0030145 manganese ion binding', 'GO:0004653 polypeptide N-acetylgalactosaminyltransferase activity', 'GO:0002639 positive regulation of immunoglobulin production', 'GO:0051604 protein maturation', 'GO:0006493 protein O-linked glycosylation', 'GO:0016266 protein O-linked glycosylation via N-acetyl-galactosamine'],
+        protein_diseases=['Congenital disorder of glycosylation 2T'],
+        method="ChEMBL", score=6.03, source_ref="ChEMBL ID: CHEMBL288114"
+    ),
+    slot(
+        uniprot_id="Q9NUW8", protein_name="Tyrosyl-DNA phosphodiesterase 1", protein_acronym="TDP1",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Ubiquitously expressed. Similar expression throughout the central nervous system (whole brain, amygdala, caudate nucleus, cerebellum, cerebral cortex, frontal lobe, hippocampus, medulla oblongata, occipital lobe, putamen, substantia nigra, temporal lobe, thalamus, nucleus accumbens and spinal cord) and increased expression in testis and thymus'],
+        best_structure="AlphaFold:AF-Q9NUW8-F1", other_structures=[],
+        go_terms=['GO:0005737 cytoplasm', 'GO:0070421 DNA ligase III-XRCC1 complex', 'GO:0005654 nucleoplasm', 'GO:0005634 nucleus', 'GO:0090734 site of DNA damage', "GO:0017005 3'-tyrosyl-DNA phosphodiesterase activity", 'GO:0003690 double-stranded DNA binding', 'GO:0003697 single-stranded DNA binding', 'GO:0006281 DNA repair', 'GO:0006302 double-strand break repair', 'GO:0006282 regulation of DNA repair', 'GO:0000012 single strand break repair'],
+        protein_diseases=['Spinocerebellar ataxia, autosomal recessive, with axonal neuropathy 1'],
+        method="ChEMBL", score=6.0, source_ref="ChEMBL ID: CHEMBL288114"
+    ),
+    slot(
+        uniprot_id="P10636", protein_name="Microtubule-associated protein tau", protein_acronym="MAPT",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Expressed in neurons. Isoform PNS-tau is expressed in the peripheral nervous system while the others are expressed in the central nervous system'],
+        best_structure="AlphaFold:AF-P10636-F1", other_structures=[],
+        go_terms=['GO:0030673 axolemma', 'GO:0030424 axon', 'GO:1904115 axon cytoplasm', 'GO:0044297 cell body', 'GO:0005737 cytoplasm', 'GO:0036464 cytoplasmic ribonucleoprotein granule', 'GO:0005829 cytosol', 'GO:0030425 dendrite', 'GO:0043197 dendritic spine', 'GO:0005576 extracellular region', 'GO:0097386 glial cell projection', 'GO:0030426 growth cone', 'GO:0044304 main axon', 'GO:0045121 membrane raft', 'GO:0015630 microtubule cytoskeleton', 'GO:0005739 mitochondrion', 'GO:0097418 neurofibrillary tangle', 'GO:0043025 neuronal cell body', 'GO:0034399 nuclear periphery', 'GO:0005634 nucleus', 'GO:0005886 plasma membrane', 'GO:0036477 somatodendritic compartment', 'GO:0045298 tubulin complex', 'GO:0003779 actin binding', 'GO:0034185 apolipoprotein binding', 'GO:0003677 DNA binding', 'GO:0003690 double-stranded DNA binding', 'GO:0034452 dynactin binding', 'GO:0019899 enzyme binding', 'GO:0004857 enzyme inhibitor activity', 'GO:0099077 histone-dependent DNA binding', 'GO:0051879 Hsp90 protein binding', 'GO:0042802 identical protein binding', 'GO:0071813 lipoprotein particle binding', 'GO:0008017 microtubule binding', 'GO:0099609 microtubule lateral binding', 'GO:0140778 microtubule stabilizing activity', 'GO:0003680 minor groove of adenine-thymine-rich DNA binding', 'GO:0035091 phosphatidylinositol binding', 'GO:1902936 phosphatidylinositol bisphosphate binding', 'GO:0019901 protein kinase binding', 'GO:0051721 protein phosphatase 2A binding', 'GO:0051087 protein-folding chaperone binding', 'GO:0030674 protein-macromolecule adaptor activity', 'GO:0003723 RNA binding', 'GO:0043565 sequence-specific DNA binding', 'GO:0017124 SH3 domain binding', 'GO:0003697 single-stranded DNA binding', 'GO:1990000 amyloid fibril formation', 'GO:0048143 astrocyte activation', 'GO:0061564 axon development', 'GO:0098930 axonal transport', 'GO:0019896 axonal transport of mitochondrion', 'GO:0007267 cell-cell signaling', 'GO:1990416 cellular response to brain-derived neurotrophic factor stimulus', 'GO:0034605 cellular response to heat', 'GO:1990090 cellular response to nerve growth factor stimulus', 'GO:0034614 cellular response to reactive oxygen species', 'GO:0021954 central nervous system neuron development', 'GO:0031122 cytoplasmic microtubule organization', 'GO:0006974 DNA damage response', 'GO:0048699 generation of neurons', 'GO:0048312 intracellular distribution of mitochondria', 'GO:0007611 learning or memory', 'GO:0007613 memory', 'GO:0001774 microglial cell activation', 'GO:0000226 microtubule cytoskeleton organization', 'GO:0046785 microtubule polymerization', 'GO:0010629 negative regulation of gene expression', 'GO:0090258 negative regulation of mitochondrial fission', 'GO:0010917 negative regulation of mitochondrial membrane potential', 'GO:1903748 negative regulation of protein localization to mitochondrion', 'GO:1902988 neurofibrillary tangle assembly', 'GO:0031175 neuron projection development', 'GO:0072386 plus-end-directed organelle transport along microtubule', 'GO:0045773 positive regulation of axon extension', 'GO:0031116 positive regulation of microtubule polymerization', 'GO:1903829 positive regulation of protein localization', 'GO:1902474 positive regulation of protein localization to synapse', 'GO:0032930 positive regulation of superoxide anion generation', 'GO:0051260 protein homooligomerization', 'GO:0051258 protein polymerization', 'GO:0010506 regulation of autophagy', 'GO:0050848 regulation of calcium-mediated signaling', 'GO:1900034 regulation of cellular response to heat', 'GO:0033044 regulation of chromosome organization', 'GO:1900452 regulation of long-term synaptic depression', 'GO:0070507 regulation of microtubule cytoskeleton organization', 'GO:0031113 regulation of microtubule polymerization', 'GO:0031110 regulation of microtubule polymerization or depolymerization', 'GO:0060632 regulation of microtubule-based movement', 'GO:0090140 regulation of mitochondrial fission', 'GO:0048167 regulation of synaptic plasticity', 'GO:0010288 response to lead ion', 'GO:0016072 rRNA metabolic process', 'GO:0034063 stress granule assembly', 'GO:0097435 supramolecular fiber organization', 'GO:0007416 synapse assembly', 'GO:0050808 synapse organization'],
+        protein_diseases=['Frontotemporal dementia 1', 'Pick disease of the brain', 'Progressive supranuclear palsy 1', 'Parkinson-dementia syndrome'],
+        method="ChEMBL", score=5.9, source_ref="ChEMBL ID: CHEMBL288114"
+    ),
+    slot(
+        uniprot_id="P00352", protein_name="Aldehyde dehydrogenase 1A1", protein_acronym="ALDH1A1",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Expressed by erythrocytes (at protein level)'],
+        best_structure="AlphaFold:AF-P00352-F1", other_structures=[],
+        go_terms=['GO:0030424 axon', 'GO:0005737 cytoplasm', 'GO:0005829 cytosol', 'GO:0070062 extracellular exosome', 'GO:0045202 synapse', 'GO:0106373 3-deoxyglucosone dehydrogenase activity', 'GO:0140087 acetaldehyde dehydrogenase (NAD+) activity', 'GO:0004029 aldehyde dehydrogenase (NAD+) activity', 'GO:0019145 aminobutyraldehyde dehydrogenase (NAD+) activity', 'GO:0005497 androgen binding', 'GO:0018479 benzaldehyde dehydrogenase (NAD+) activity', 'GO:0005096 GTPase activator activity', 'GO:0052814 medium-chain fatty aldehyde dehydrogenase (NAD+) activity', 'GO:0051287 NAD binding', 'GO:0070403 NAD+ binding', 'GO:0001758 retinal dehydrogenase (NAD+) activity', 'GO:0042904 9-cis-retinoic acid biosynthetic process', 'GO:0006081 aldehyde metabolic process', 'GO:0110095 cellular detoxification of aldehyde', 'GO:0030392 fructosamine catabolic process', 'GO:0006540 GABA shunt', 'GO:0036438 maintenance of lens transparency', 'GO:0120163 negative regulation of cold-induced thermogenesis', 'GO:0001523 retinoid metabolic process', 'GO:0042572 retinol metabolic process'],
+        protein_diseases=[],
+        method="ChEMBL", score=5.7, source_ref="ChEMBL ID: CHEMBL288114"
+    ),
+    slot(
+        uniprot_id="P00918", protein_name="Carbonic anhydrase 2", protein_acronym="CA2",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-P00918-F1", other_structures=[],
+        go_terms=['GO:0045177 apical part of cell', 'GO:0005737 cytoplasm', 'GO:0005829 cytosol', 'GO:0070062 extracellular exosome', 'GO:0043209 myelin sheath', 'GO:0005886 plasma membrane', 'GO:0004064 arylesterase activity', 'GO:0004089 carbonate dehydratase activity', 'GO:0018820 cyanamide hydratase activity', 'GO:0008270 zinc ion binding', 'GO:0038166 angiotensin-activated signaling pathway', 'GO:2001150 positive regulation of dipeptide transmembrane transport', 'GO:0051453 regulation of intracellular pH', 'GO:0044070 regulation of monoatomic anion transport'],
+        protein_diseases=['Osteopetrosis, autosomal recessive 3'],
+        method="ChEMBL", score=5.65, source_ref="ChEMBL ID: CHEMBL288114"
+    ),
+    slot(
+        uniprot_id="P00915", protein_name="Carbonic anhydrase 1", protein_acronym="CA1",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-P00915-F1", other_structures=[],
+        go_terms=['GO:0005737 cytoplasm', 'GO:0005829 cytosol', 'GO:0070062 extracellular exosome', 'GO:0004064 arylesterase activity', 'GO:0004089 carbonate dehydratase activity', 'GO:0018820 cyanamide hydratase activity', 'GO:0016836 hydro-lyase activity', 'GO:0008270 zinc ion binding', 'GO:0009750 response to fructose'],
+        protein_diseases=[],
+        method="ChEMBL", score=5.5, source_ref="ChEMBL ID: CHEMBL288114"
+    ),
+]
+
+def main():
+    record = dict(CHEMICAL, targets=TARGETS)
+    conn = sqlite3.connect(DB_DEFAULT)
+    conn.execute("PRAGMA foreign_keys=ON")
+    try:
+        conn.execute("SAVEPOINT chem")
+        import_record(conn, record)
+        conn.execute("RELEASE chem")
+        conn.commit()
+        n = sum(1 for t in TARGETS if t["uniprot_id"])
+        print(f"Saved {CHEMICAL['chemical_name']} with {n} target protein(s).")
+    except Exception as e:
+        conn.execute("ROLLBACK TO chem")
+        conn.execute("RELEASE chem")
+        print(f"Nothing saved for {CHEMICAL['chemical_name']}: {e}")
+    finally:
+        conn.close()
+
+if __name__ == "__main__":
+    main()
