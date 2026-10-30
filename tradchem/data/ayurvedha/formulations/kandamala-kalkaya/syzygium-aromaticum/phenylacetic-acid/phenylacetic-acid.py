@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+import sqlite3
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[7] / "contributions"))
+from import_data import import_record, DB_DEFAULT  # noqa: E402
+
+CHEMICAL = {
+    "medicine": "kandamala-kalkaya",
+    "system": "Ayurveda",
+    "plant": "Syzygium aromaticum",
+    "plant_type": "tree",
+    "part_used": "flower buds",
+    "family": "Myrtaceae",
+    "common_name": "Clove",
+    "chemical_name": "Phenylacetic acid",
+    "smiles": "O=C(O)Cc1ccccc1",
+    "pubchem_cid": "999",
+    "diseases": [],
+}
+
+def slot(uniprot_id="", protein_name="", protein_acronym="", species="", taxon_id="",
+         cell_types=(), best_structure="", other_structures=(), go_terms=(),
+         protein_diseases=(), method="", score="", source_ref=""):
+    return dict(uniprot_id=uniprot_id, protein_name=protein_name, protein_acronym=protein_acronym,
+                species=species, taxon_id=taxon_id, cell_types=list(cell_types),
+                best_structure=best_structure, other_structures=list(other_structures),
+                go_terms=list(go_terms), protein_diseases=list(protein_diseases),
+                method=method, score=score, source_ref=source_ref)
+
+TARGETS = [
+    slot(
+        uniprot_id="P15121", protein_name="Aldo-keto reductase family 1 member B1", protein_acronym="AKR1B1",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Highly expressed in embryonic epithelial cells (EUE) in response to osmotic stress'],
+        best_structure="AlphaFold:AF-P15121-F1", other_structures=[],
+        go_terms=['GO:0005829 cytosol', 'GO:0070062 extracellular exosome', 'GO:0005576 extracellular region', 'GO:0005739 mitochondrion', 'GO:0005654 nucleoplasm', 'GO:0004032 aldose reductase (NADPH) activity', 'GO:0052650 all-trans-retinol dehydrogenase (NADP+) activity', 'GO:0047655 allyl-alcohol dehydrogenase activity', 'GO:0047681 aryl-alcohol dehydrogenase (NADP+) activity', 'GO:0032866 D-xylose reductase (NADPH) activity', 'GO:0009055 electron transfer activity', 'GO:0043795 glyceraldehyde oxidoreductase activity', 'GO:0047956 glycerol dehydrogenase (NADP+) activity', 'GO:0032867 L-arabinose reductase (NADPH) activity', 'GO:0047939 L-glucuronate reductase activity', 'GO:0036130 prostaglandin H2 endoperoxidase reductase activity', 'GO:0001758 retinal dehydrogenase (NAD+) activity', 'GO:0006700 C21-steroid hormone biosynthetic process', 'GO:0005975 carbohydrate metabolic process', 'GO:0071475 cellular hyperosmotic salinity response', 'GO:0006060 D-sorbitol metabolic process', 'GO:0044597 daunorubicin metabolic process', 'GO:0044598 doxorubicin metabolic process', 'GO:0046370 fructose biosynthetic process', 'GO:0001523 retinoid metabolic process'],
+        protein_diseases=[],
+        method="ChEMBL", score=4.02, source_ref="ChEMBL ID: CHEMBL1044"
+    ),
+    slot(),
+    slot(),
+    slot(),
+    slot(),
+    slot(),
+    slot(),
+    slot(),
+    slot(),
+    slot(),
+]
+
+def main():
+    record = dict(CHEMICAL, targets=TARGETS)
+    conn = sqlite3.connect(DB_DEFAULT)
+    conn.execute("PRAGMA foreign_keys=ON")
+    try:
+        conn.execute("SAVEPOINT chem")
+        import_record(conn, record)
+        conn.execute("RELEASE chem")
+        conn.commit()
+        n = sum(1 for t in TARGETS if t["uniprot_id"])
+        print(f"Saved {CHEMICAL['chemical_name']} with {n} target protein(s).")
+    except Exception as e:
+        conn.execute("ROLLBACK TO chem")
+        conn.execute("RELEASE chem")
+        print(f"Nothing saved for {CHEMICAL['chemical_name']}: {e}")
+    finally:
+        conn.close()
+
+if __name__ == "__main__":
+    main()

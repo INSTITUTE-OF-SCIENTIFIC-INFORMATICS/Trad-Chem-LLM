@@ -33,3 +33,31 @@ By adding your name above you confirm that:
 - `python3 contributions/check_submission.py <path-to-chemical-folder>/<chemical>` reported **PASSED**,
 - you have removed all example rows from the templates,
 - you are happy for the data to be released under the project licence: **[add licence]**.
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | beta-caryophyllene | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | caffeic-acid | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | carvacrol | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | ellagic-acid | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | eugenin | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | eugenol | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | eugenyl-acetate | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | ferulic-acid | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | gallic-acid | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | hexadecanoic-acid | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | isorhamnetin | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | kaempferol | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | limonin | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | maslinic-acid | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | methyl-salicylate | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | myricetin | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | orsellinic-acid | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | p-hydroxybenzoic-acid | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | phenylacetic-acid | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | protocatechuic-acid | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | quercetin | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | rhamnetin | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | rhamnocitrin | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | salicylic-acid | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | syringic-acid | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | thymol | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | vanillin | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |
+| - | Pahanma | | | Ayurvedha | kandamala-kalkaya | Syzygium aromaticum | vitamin-e-acetate | 10/10 | ✅ | ✅ | ✅ | doi:10.1002/ffj.1364 | 2026-10-31 | |

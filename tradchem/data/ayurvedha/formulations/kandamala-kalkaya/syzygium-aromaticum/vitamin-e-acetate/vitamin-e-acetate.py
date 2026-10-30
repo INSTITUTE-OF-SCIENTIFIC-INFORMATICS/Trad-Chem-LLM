@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+import sqlite3
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[7] / "contributions"))
+from import_data import import_record, DB_DEFAULT  # noqa: E402
+
+CHEMICAL = {
+    "medicine": "kandamala-kalkaya",
+    "system": "Ayurveda",
+    "plant": "Syzygium aromaticum",
+    "plant_type": "tree",
+    "part_used": "flower buds",
+    "family": "Myrtaceae",
+    "common_name": "Clove",
+    "chemical_name": "Vitamin E acetate",
+    "smiles": "CC(=O)Oc1c(C)c(C)c2c(c1C)CCC(C)(CCCC(C)CCCC(C)CCCC(C)C)O2",
+    "pubchem_cid": "86472",
+    "diseases": [],
+}
+
+def slot(uniprot_id="", protein_name="", protein_acronym="", species="", taxon_id="",
+         cell_types=(), best_structure="", other_structures=(), go_terms=(),
+         protein_diseases=(), method="", score="", source_ref=""):
+    return dict(uniprot_id=uniprot_id, protein_name=protein_name, protein_acronym=protein_acronym,
+                species=species, taxon_id=taxon_id, cell_types=list(cell_types),
+                best_structure=best_structure, other_structures=list(other_structures),
+                go_terms=list(go_terms), protein_diseases=list(protein_diseases),
+                method=method, score=score, source_ref=source_ref)
+
+TARGETS = [
+    slot(
+        uniprot_id="Q14432", protein_name="cGMP-inhibited 3',5'-cyclic phosphodiesterase 3A", protein_acronym="PDE3A",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-Q14432-F1", other_structures=[],
+        go_terms=['GO:0005829 cytosol', 'GO:0016020 membrane', "GO:0004119 3',5'-cGMP-inhibited cyclic-nucleotide phosphodiesterase activity", "GO:0004115 3',5'-cyclic-AMP phosphodiesterase activity", "GO:0047555 3',5'-cyclic-GMP phosphodiesterase activity", "GO:0004114 3',5'-cyclic-nucleotide phosphodiesterase activity", 'GO:0099130 estrogen binding', 'GO:0030284 nuclear estrogen receptor activity', 'GO:0097190 apoptotic signaling pathway', 'GO:0071321 cellular response to cGMP', 'GO:0071560 cellular response to transforming growth factor beta stimulus', 'GO:0007186 G protein-coupled receptor signaling pathway', 'GO:0006629 lipid metabolic process', 'GO:0106072 negative regulation of adenylate cyclase-activating G protein-coupled receptor signaling pathway', 'GO:0043066 negative regulation of apoptotic process', 'GO:0141162 negative regulation of cAMP/PKA signal transduction', 'GO:0043116 negative regulation of vascular permeability', 'GO:0001556 oocyte maturation', 'GO:0043117 positive regulation of vascular permeability', 'GO:0060700 regulation of ribonuclease activity'],
+        protein_diseases=['Hypertension and brachydactyly syndrome'],
+        method="ChEMBL", score=6.03, source_ref="ChEMBL ID: CHEMBL1047"
+    ),
+    slot(
+        uniprot_id="P27815", protein_name="3',5'-cyclic-AMP phosphodiesterase 4A", protein_acronym="PDE4A",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Expressed in lymphoid cell subsets including CD8-positive T cells and T-helper 2 cells. Expressed in dendritic cells', 'Highly expressed in liver, stomach, testis, thyroid and adrenal glands and at a lower extent in placenta, kidney, pancreas, ovary, uterus and skin. Expressed in myeloid cell subsets including dendritic cells, monocytes, macrophages, eosinophils and mast cells. Expressed in natural killer cells. Expressed in bronchial smooth muscle', 'Expressed at high levels in the heart and small intestine. It is also found in the brain, kidney, spleen, colon, salivary gland, ovary and peripheral blood lymphocytes', 'Expressed predominantly in skeletal muscle and brain and at lower levels in the testis. Found in specific neuronal subpopulations including cortical pyramidal neurons, horn neurons in the spinal cord and Purkinje cells in cerebellum (at protein level)'],
+        best_structure="AlphaFold:AF-P27815-F1", other_structures=[],
+        go_terms=['GO:0005829 cytosol', 'GO:0019898 extrinsic component of membrane', 'GO:0016020 membrane', 'GO:0048471 perinuclear region of cytoplasm', 'GO:0005886 plasma membrane', 'GO:0032587 ruffle membrane', "GO:0004115 3',5'-cyclic-AMP phosphodiesterase activity", "GO:0047555 3',5'-cyclic-GMP phosphodiesterase activity", 'GO:0030552 cAMP binding', 'GO:0006198 cAMP catabolic process', 'GO:0007186 G protein-coupled receptor signaling pathway', 'GO:0141162 negative regulation of cAMP/PKA signal transduction', 'GO:0007165 signal transduction'],
+        protein_diseases=[],
+        method="ChEMBL", score=5.03, source_ref="ChEMBL ID: CHEMBL1047"
+    ),
+    slot(),
+    slot(),
+    slot(),
+    slot(),
+    slot(),
+    slot(),
+    slot(),
+    slot(),
+]
+
+def main():
+    record = dict(CHEMICAL, targets=TARGETS)
+    conn = sqlite3.connect(DB_DEFAULT)
+    conn.execute("PRAGMA foreign_keys=ON")
+    try:
+        conn.execute("SAVEPOINT chem")
+        import_record(conn, record)
+        conn.execute("RELEASE chem")
+        conn.commit()
+        n = sum(1 for t in TARGETS if t["uniprot_id"])
+        print(f"Saved {CHEMICAL['chemical_name']} with {n} target protein(s).")
+    except Exception as e:
+        conn.execute("ROLLBACK TO chem")
+        conn.execute("RELEASE chem")
+        print(f"Nothing saved for {CHEMICAL['chemical_name']}: {e}")
+    finally:
+        conn.close()
+
+if __name__ == "__main__":
+    main()

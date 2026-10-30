@@ -1,0 +1,144 @@
+#!/usr/bin/env python3
+import sqlite3
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[7] / "contributions"))
+from import_data import import_record, DB_DEFAULT  # noqa: E402
+
+CHEMICAL = {
+    "medicine": "kandamala-kalkaya",
+    "system": "Ayurveda",
+    "plant": "Syzygium aromaticum",
+    "plant_type": "tree",
+    "part_used": "flower buds",
+    "family": "Myrtaceae",
+    "common_name": "Clove",
+    "chemical_name": "Kaempferol",
+    "smiles": "O=c1c(O)c(-c2ccc(O)cc2)oc2cc(O)cc(O)c12",
+    "pubchem_cid": "5280863",
+    "diseases": [],
+}
+
+def slot(uniprot_id="", protein_name="", protein_acronym="", species="", taxon_id="",
+         cell_types=(), best_structure="", other_structures=(), go_terms=(),
+         protein_diseases=(), method="", score="", source_ref=""):
+    return dict(uniprot_id=uniprot_id, protein_name=protein_name, protein_acronym=protein_acronym,
+                species=species, taxon_id=taxon_id, cell_types=list(cell_types),
+                best_structure=best_structure, other_structures=list(other_structures),
+                go_terms=list(go_terms), protein_diseases=list(protein_diseases),
+                method=method, score=score, source_ref=source_ref)
+
+TARGETS = [
+    slot(
+        uniprot_id="P11712", protein_name="Cytochrome P450 2C9", protein_acronym="CYP2C9",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-P11712-F1", other_structures=[],
+        go_terms=['GO:0005737 cytoplasm', 'GO:0005789 endoplasmic reticulum membrane', 'GO:0043231 intracellular membrane-bounded organelle', 'GO:0052741 (R)-limonene 6-monooxygenase activity', 'GO:0018675 (S)-limonene 6-monooxygenase activity', 'GO:0018676 (S)-limonene 7-monooxygenase activity', 'GO:0008405 arachidonate 11,12-epoxygenase activity', 'GO:0008404 arachidonate 14,15-epoxygenase activity', 'GO:0106302 arachidonate 8,9-epoxygenase activity', 'GO:0008392 arachidonate epoxygenase activity', 'GO:0034875 caffeine oxidase activity', 'GO:0101021 estrogen 2-hydroxylase activity', 'GO:0120502 fatty acid omega-1 hydroxylase activity', 'GO:0020037 heme binding', 'GO:0005506 iron ion binding', 'GO:0004497 monooxygenase activity', 'GO:0016491 oxidoreductase activity', 'GO:0016712 oxidoreductase activity, acting on paired donors, with incorporation or reduction of molecular oxygen, reduced flavin or flavoprotein as one donor, and incorporation of one atom of oxygen', 'GO:0008395 steroid hydroxylase activity', 'GO:0008203 cholesterol metabolic process', 'GO:0019373 epoxygenase P450 pathway', 'GO:0008210 estrogen metabolic process', 'GO:0046456 icosanoid biosynthetic process', 'GO:0042759 long-chain fatty acid biosynthetic process', 'GO:0032787 monocarboxylic acid metabolic process', 'GO:0016098 monoterpenoid metabolic process', 'GO:0097267 omega-hydroxylase P450 pathway', 'GO:0090346 organofluorine metabolic process', 'GO:0070989 oxidative demethylation', 'GO:0008202 steroid metabolic process', 'GO:0019627 urea metabolic process', 'GO:0042178 xenobiotic catabolic process', 'GO:0006805 xenobiotic metabolic process'],
+        protein_diseases=[],
+        method="ChEMBL", score=8.9, source_ref="ChEMBL ID: CHEMBL150"
+    ),
+    slot(
+        uniprot_id="P43166", protein_name="Carbonic anhydrase 7", protein_acronym="CA7",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-P43166-F1", other_structures=[],
+        go_terms=['GO:0005737 cytoplasm', 'GO:0005829 cytosol', 'GO:0004089 carbonate dehydratase activity', 'GO:0008270 zinc ion binding'],
+        protein_diseases=[],
+        method="ChEMBL", score=7.6, source_ref="ChEMBL ID: CHEMBL150"
+    ),
+    slot(
+        uniprot_id="P35869", protein_name="Aryl hydrocarbon receptor", protein_acronym="AHR",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Expressed in all tissues tested including blood, brain, heart, kidney, liver, lung, pancreas and skeletal muscle. Expressed in retinal photoreceptors (PubMed:29726989)'],
+        best_structure="AlphaFold:AF-P35869-F1", other_structures=[],
+        go_terms=['GO:0034751 aryl hydrocarbon receptor complex', 'GO:0000785 chromatin', 'GO:0005737 cytoplasm', 'GO:0005829 cytosol', 'GO:0034752 cytosolic aryl hydrocarbon receptor complex', 'GO:0034753 nuclear aryl hydrocarbon receptor complex', 'GO:0005654 nucleoplasm', 'GO:0005634 nucleus', 'GO:0032991 protein-containing complex', 'GO:0005667 transcription regulator complex', 'GO:0000987 cis-regulatory region sequence-specific DNA binding', 'GO:0003677 DNA binding', 'GO:0003700 DNA-binding transcription factor activity', 'GO:0000981 DNA-binding transcription factor activity, RNA polymerase II-specific', 'GO:0070888 E-box binding', 'GO:0051879 Hsp90 protein binding', 'GO:0004879 nuclear receptor activity', 'GO:0046982 protein heterodimerization activity', 'GO:0042803 protein homodimerization activity', 'GO:0061629 RNA polymerase II-specific DNA-binding transcription factor binding', 'GO:1990837 sequence-specific double-stranded DNA binding', 'GO:0017025 TBP-class protein binding', 'GO:0001094 TFIID-class transcription factor complex binding', 'GO:0000976 transcription cis-regulatory region binding', 'GO:0001223 transcription coactivator binding', 'GO:0006915 apoptotic process', 'GO:0001568 blood vessel development', 'GO:1904613 cellular response to 2,3,7,8-tetrachlorodibenzodioxine', 'GO:0071320 cellular response to cAMP', 'GO:1904322 cellular response to forskolin', 'GO:0071219 cellular response to molecule of bacterial origin', 'GO:0032922 circadian regulation of gene expression', 'GO:0045892 negative regulation of DNA-templated transcription', 'GO:0050728 negative regulation of inflammatory response', 'GO:0002841 negative regulation of T cell mediated immune response to tumor cell', 'GO:0045893 positive regulation of DNA-templated transcription', 'GO:0045944 positive regulation of transcription by RNA polymerase II', 'GO:0002819 regulation of adaptive immune response', 'GO:0030888 regulation of B cell proliferation', 'GO:0006355 regulation of DNA-templated transcription', 'GO:0010468 regulation of gene expression', 'GO:0006357 regulation of transcription by RNA polymerase II', 'GO:0009636 response to toxic substance', 'GO:0009410 response to xenobiotic stimulus', 'GO:0006805 xenobiotic metabolic process'],
+        protein_diseases=['Retinitis pigmentosa 85', 'Foveal hypoplasia 3'],
+        method="ChEMBL", score=7.55, source_ref="ChEMBL ID: CHEMBL150"
+    ),
+    slot(
+        uniprot_id="Q16678", protein_name="Cytochrome P450 1B1", protein_acronym="CYP1B1",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Expressed in heart, brain, lung, skeletal muscle, kidney, spleen, thymus, prostate, testis, ovary, small intestine, colon, and peripheral blood leukocytes (PubMed:8175734). Expressed in retinal endothelial cells and umbilical vein endothelial cells (at protein level) (PubMed:19005183)'],
+        best_structure="AlphaFold:AF-Q16678-F1", other_structures=[],
+        go_terms=['GO:0005789 endoplasmic reticulum membrane', 'GO:0005739 mitochondrion', 'GO:0008405 arachidonate 11,12-epoxygenase activity', 'GO:0008404 arachidonate 14,15-epoxygenase activity', 'GO:0106302 arachidonate 8,9-epoxygenase activity', 'GO:0101020 estrogen 16-alpha-hydroxylase activity', 'GO:0101021 estrogen 2-hydroxylase activity', 'GO:0020037 heme binding', 'GO:0106256 hydroperoxy icosatetraenoate dehydratase activity', 'GO:0005506 iron ion binding', 'GO:0004497 monooxygenase activity', 'GO:0016709 oxidoreductase activity, acting on paired donors, with incorporation or reduction of molecular oxygen, NAD(P)H as one donor, and incorporation of one atom of oxygen', 'GO:0016712 oxidoreductase activity, acting on paired donors, with incorporation or reduction of molecular oxygen, reduced flavin or flavoprotein as one donor, and incorporation of one atom of oxygen', 'GO:0008395 steroid hydroxylase activity', 'GO:0050649 testosterone 6-beta-hydroxylase activity', 'GO:0019369 arachidonate metabolic process', 'GO:0048514 blood vessel morphogenesis', 'GO:0007155 cell adhesion', 'GO:0070301 cellular response to hydrogen peroxide', 'GO:0030199 collagen fibril organization', 'GO:0043542 endothelial cell migration', 'GO:0019373 epoxygenase P450 pathway', 'GO:0008210 estrogen metabolic process', 'GO:0008631 intrinsic apoptotic signaling pathway in response to oxidative stress', 'GO:0016042 lipid catabolic process', 'GO:0033629 negative regulation of cell adhesion mediated by integrin', 'GO:0030336 negative regulation of cell migration', 'GO:0008285 negative regulation of cell population proliferation', 'GO:0006809 nitric oxide biosynthetic process', 'GO:0097267 omega-hydroxylase P450 pathway', 'GO:0045766 positive regulation of angiogenesis', 'GO:0043065 positive regulation of apoptotic process', 'GO:0046427 positive regulation of receptor signaling pathway via JAK-STAT', 'GO:0010575 positive regulation of vascular endothelial growth factor production', 'GO:2000377 regulation of reactive oxygen species metabolic process', 'GO:0061304 retinal blood vessel morphogenesis', 'GO:0042574 retinal metabolic process', 'GO:0042572 retinol metabolic process', 'GO:0006706 steroid catabolic process', 'GO:0008202 steroid metabolic process', 'GO:0016125 sterol metabolic process', 'GO:0009404 toxin metabolic process', 'GO:0002930 trabecular meshwork development', 'GO:0042178 xenobiotic catabolic process', 'GO:0006805 xenobiotic metabolic process'],
+        protein_diseases=['Anterior segment dysgenesis 6', 'Glaucoma 3, primary congenital, A', 'Glaucoma 1, open angle, A'],
+        method="ChEMBL", score=7.37, source_ref="ChEMBL ID: CHEMBL150"
+    ),
+    slot(
+        uniprot_id="P05177", protein_name="Cytochrome P450 1A2", protein_acronym="CYP1A2",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Liver'],
+        best_structure="AlphaFold:AF-P05177-F1", other_structures=[],
+        go_terms=['GO:0005789 endoplasmic reticulum membrane', 'GO:0043231 intracellular membrane-bounded organelle', 'GO:0005739 mitochondrion', 'GO:0008404 arachidonate 14,15-epoxygenase activity', 'GO:0034875 caffeine oxidase activity', 'GO:0032451 demethylase activity', 'GO:0009055 electron transfer activity', 'GO:0019899 enzyme binding', 'GO:0101020 estrogen 16-alpha-hydroxylase activity', 'GO:0101021 estrogen 2-hydroxylase activity', 'GO:0120502 fatty acid omega-1 hydroxylase activity', 'GO:0020037 heme binding', 'GO:0106256 hydroperoxy icosatetraenoate dehydratase activity', 'GO:0005506 iron ion binding', 'GO:0004497 monooxygenase activity', 'GO:0016491 oxidoreductase activity', 'GO:0016712 oxidoreductase activity, acting on paired donors, with incorporation or reduction of molecular oxygen, reduced flavin or flavoprotein as one donor, and incorporation of one atom of oxygen', 'GO:0008395 steroid hydroxylase activity', 'GO:0046222 aflatoxin metabolic process', 'GO:0009820 alkaloid metabolic process', 'GO:0008203 cholesterol metabolic process', 'GO:0019373 epoxygenase P450 pathway', 'GO:0008210 estrogen metabolic process', 'GO:0042759 long-chain fatty acid biosynthetic process', 'GO:0032259 methylation', 'GO:0032787 monocarboxylic acid metabolic process', 'GO:0016098 monoterpenoid metabolic process', 'GO:0097267 omega-hydroxylase P450 pathway', 'GO:0070989 oxidative demethylation', 'GO:0042572 retinol metabolic process', 'GO:0006706 steroid catabolic process', 'GO:0009403 toxin biosynthetic process', 'GO:0009404 toxin metabolic process', 'GO:0042178 xenobiotic catabolic process', 'GO:0006805 xenobiotic metabolic process'],
+        protein_diseases=[],
+        method="ChEMBL", score=7.1, source_ref="ChEMBL ID: CHEMBL150"
+    ),
+    slot(
+        uniprot_id="Q9NZ45", protein_name="CDGSH iron-sulfur domain-containing protein 1", protein_acronym="CISD1",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Expression is reduced in cells derived from cystic fibrosis patients'],
+        best_structure="AlphaFold:AF-Q9NZ45-F1", other_structures=[],
+        go_terms=['GO:0005741 mitochondrial outer membrane', 'GO:0005739 mitochondrion', 'GO:0051537 2 iron, 2 sulfur cluster binding', 'GO:0042802 identical protein binding', 'GO:0047801 L-cysteine:2-oxoglutarate transaminase activity', 'GO:0042803 protein homodimerization activity', 'GO:0030170 pyridoxal phosphate binding', 'GO:0006879 intracellular iron ion homeostasis', 'GO:0051604 protein maturation', 'GO:0010506 regulation of autophagy'],
+        protein_diseases=[],
+        method="ChEMBL", score=6.88, source_ref="ChEMBL ID: CHEMBL150"
+    ),
+    slot(
+        uniprot_id="O43570", protein_name="Carbonic anhydrase 12", protein_acronym="CA12",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Highly expressed in colon, kidney, prostate, intestine and activated lymphocytes. Expressed at much higher levels in the renal cell cancers than in surrounding normal kidney tissue. Moderately expressed in pancreas, ovary and testis. Expressed in sweat glands and bronchiolar epithelium (PubMed:26911677)'],
+        best_structure="AlphaFold:AF-O43570-F1", other_structures=[],
+        go_terms=['GO:0016324 apical plasma membrane', 'GO:0016323 basolateral plasma membrane', 'GO:0016020 membrane', 'GO:0005886 plasma membrane', 'GO:0004089 carbonate dehydratase activity', 'GO:0008270 zinc ion binding', 'GO:0055064 chloride ion homeostasis', 'GO:0044849 estrous cycle'],
+        protein_diseases=['Hyperchlorhidrosis, isolated'],
+        method="ChEMBL", score=6.84, source_ref="ChEMBL ID: CHEMBL150"
+    ),
+    slot(
+        uniprot_id="P67870", protein_name="Casein kinase II subunit beta", protein_acronym="CSNK2B",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-P67870-F1", other_structures=[],
+        go_terms=['GO:0000785 chromatin', 'GO:0005737 cytoplasm', 'GO:0005829 cytosol', 'GO:0070062 extracellular exosome', 'GO:0005576 extracellular region', 'GO:0001650 fibrillar center', 'GO:1904813 ficolin-1-rich granule lumen', 'GO:0005654 nucleoplasm', 'GO:0005634 nucleus', 'GO:0016605 PML body', 'GO:0035102 PRC1 complex', 'GO:0005956 protein kinase CK2 complex', 'GO:0034774 secretory granule lumen', 'GO:0003682 chromatin binding', 'GO:0042802 identical protein binding', 'GO:0019904 protein domain specific binding', 'GO:0019887 protein kinase regulator activity', 'GO:0004674 protein serine/threonine kinase activity', 'GO:0030674 protein-macromolecule adaptor activity', 'GO:0061629 RNA polymerase II-specific DNA-binding transcription factor binding', 'GO:0005102 signaling receptor binding', 'GO:0033211 adiponectin-activated signaling pathway', 'GO:0061154 endothelial tube morphogenesis', 'GO:0031507 heterochromatin formation', 'GO:0043537 negative regulation of blood vessel endothelial cell migration', 'GO:0008285 negative regulation of cell population proliferation', 'GO:0032435 negative regulation of proteasomal ubiquitin-dependent protein catabolic process', 'GO:1903901 negative regulation of viral life cycle', 'GO:0032927 positive regulation of activin receptor signaling pathway', 'GO:0045893 positive regulation of DNA-templated transcription', 'GO:0060391 positive regulation of SMAD protein signal transduction', 'GO:0065003 protein-containing complex assembly', 'GO:0007165 signal transduction', 'GO:0075342 symbiont-mediated disruption of host cell PML body'],
+        protein_diseases=['Poirier-Bienvenu neurodevelopmental syndrome'],
+        method="ChEMBL", score=6.68, source_ref="ChEMBL ID: CHEMBL150"
+    ),
+    slot(
+        uniprot_id="P37059", protein_name="17-beta-hydroxysteroid dehydrogenase type 2", protein_acronym="HSD17B2",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Expressed in placenta'],
+        best_structure="AlphaFold:AF-P37059-F1", other_structures=[],
+        go_terms=['GO:0005789 endoplasmic reticulum membrane', 'GO:0047006 17-alpha,20-alpha-dihydroxypregn-4-en-3-one dehydrogenase [NAD(P)+] activity', 'GO:0004303 estradiol 17-beta-dehydrogenase [NAD(P)+] activity', 'GO:0047035 testosterone dehydrogenase (NAD+) activity', 'GO:0006702 androgen biosynthetic process', 'GO:0008209 androgen metabolic process', 'GO:0006703 estrogen biosynthetic process', 'GO:0032526 response to retinoic acid'],
+        protein_diseases=[],
+        method="ChEMBL", score=6.44, source_ref="ChEMBL ID: CHEMBL150"
+    ),
+    slot(
+        uniprot_id="P27487", protein_name="Dipeptidyl peptidase 4", protein_acronym="DPP4",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Expressed specifically in lymphatic vessels but not in blood vessels in the skin, small intestine, esophagus, ovary, breast and prostate glands. Not detected in lymphatic vessels in the lung, kidney, uterus, liver and stomach (at protein level). Expressed in the poorly differentiated crypt cells of the small intestine as well as in the mature villous cells. Expressed at very low levels in the colon'],
+        best_structure="AlphaFold:AF-P27487-F1", other_structures=[],
+        go_terms=['GO:0070161 anchoring junction', 'GO:0016324 apical plasma membrane', 'GO:0009986 cell surface', 'GO:0030139 endocytic vesicle', 'GO:0070062 extracellular exosome', 'GO:0005576 extracellular region', 'GO:0005925 focal adhesion', 'GO:0046581 intercellular canaliculus', 'GO:0030027 lamellipodium', 'GO:0031258 lamellipodium membrane', 'GO:0005765 lysosomal membrane', 'GO:0016020 membrane', 'GO:0045121 membrane raft', 'GO:0005886 plasma membrane', 'GO:0045499 chemorepellent activity', 'GO:0008239 dipeptidyl-peptidase activity', 'GO:0042802 identical protein binding', 'GO:0002020 protease binding', 'GO:0042803 protein homodimerization activity', 'GO:0004252 serine-type endopeptidase activity', 'GO:0008236 serine-type peptidase activity', 'GO:0005102 signaling receptor binding', 'GO:0008240 tripeptidyl-peptidase activity', 'GO:0001618 virus receptor activity', 'GO:0043542 endothelial cell migration', 'GO:0120116 glucagon processing', 'GO:0061025 membrane fusion', 'GO:0010716 negative regulation of extracellular matrix disassembly', 'GO:0090024 negative regulation of neutrophil chemotaxis', 'GO:0016486 peptide hormone processing', 'GO:0008284 positive regulation of cell population proliferation', 'GO:0006508 proteolysis', 'GO:0019065 receptor-mediated endocytosis of virus by host cell', 'GO:0046813 receptor-mediated virion attachment to host cell', 'GO:0033632 regulation of cell-cell adhesion mediated by integrin', 'GO:0001666 response to hypoxia', 'GO:0046718 symbiont entry into host cell', 'GO:0042110 T cell activation', 'GO:0031295 T cell costimulation'],
+        protein_diseases=[],
+        method="ChEMBL", score=6.31, source_ref="ChEMBL ID: CHEMBL150"
+    ),
+]
+
+def main():
+    record = dict(CHEMICAL, targets=TARGETS)
+    conn = sqlite3.connect(DB_DEFAULT)
+    conn.execute("PRAGMA foreign_keys=ON")
+    try:
+        conn.execute("SAVEPOINT chem")
+        import_record(conn, record)
+        conn.execute("RELEASE chem")
+        conn.commit()
+        n = sum(1 for t in TARGETS if t["uniprot_id"])
+        print(f"Saved {CHEMICAL['chemical_name']} with {n} target protein(s).")
+    except Exception as e:
+        conn.execute("ROLLBACK TO chem")
+        conn.execute("RELEASE chem")
+        print(f"Nothing saved for {CHEMICAL['chemical_name']}: {e}")
+    finally:
+        conn.close()
+
+if __name__ == "__main__":
+    main()

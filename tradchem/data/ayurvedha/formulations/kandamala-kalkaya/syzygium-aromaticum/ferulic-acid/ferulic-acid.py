@@ -1,0 +1,144 @@
+#!/usr/bin/env python3
+import sqlite3
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[7] / "contributions"))
+from import_data import import_record, DB_DEFAULT  # noqa: E402
+
+CHEMICAL = {
+    "medicine": "kandamala-kalkaya",
+    "system": "Ayurveda",
+    "plant": "Syzygium aromaticum",
+    "plant_type": "tree",
+    "part_used": "flower buds",
+    "family": "Myrtaceae",
+    "common_name": "Clove",
+    "chemical_name": "Ferulic acid",
+    "smiles": "COc1cc(C=CC(=O)O)ccc1O",
+    "pubchem_cid": "445858",
+    "diseases": [],
+}
+
+def slot(uniprot_id="", protein_name="", protein_acronym="", species="", taxon_id="",
+         cell_types=(), best_structure="", other_structures=(), go_terms=(),
+         protein_diseases=(), method="", score="", source_ref=""):
+    return dict(uniprot_id=uniprot_id, protein_name=protein_name, protein_acronym=protein_acronym,
+                species=species, taxon_id=taxon_id, cell_types=list(cell_types),
+                best_structure=best_structure, other_structures=list(other_structures),
+                go_terms=list(go_terms), protein_diseases=list(protein_diseases),
+                method=method, score=score, source_ref=source_ref)
+
+TARGETS = [
+    slot(
+        uniprot_id="P67870", protein_name="Casein kinase II subunit beta", protein_acronym="CSNK2B",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-P67870-F1", other_structures=[],
+        go_terms=['GO:0000785 chromatin', 'GO:0005737 cytoplasm', 'GO:0005829 cytosol', 'GO:0070062 extracellular exosome', 'GO:0005576 extracellular region', 'GO:0001650 fibrillar center', 'GO:1904813 ficolin-1-rich granule lumen', 'GO:0005654 nucleoplasm', 'GO:0005634 nucleus', 'GO:0016605 PML body', 'GO:0035102 PRC1 complex', 'GO:0005956 protein kinase CK2 complex', 'GO:0034774 secretory granule lumen', 'GO:0003682 chromatin binding', 'GO:0042802 identical protein binding', 'GO:0019904 protein domain specific binding', 'GO:0019887 protein kinase regulator activity', 'GO:0004674 protein serine/threonine kinase activity', 'GO:0030674 protein-macromolecule adaptor activity', 'GO:0061629 RNA polymerase II-specific DNA-binding transcription factor binding', 'GO:0005102 signaling receptor binding', 'GO:0033211 adiponectin-activated signaling pathway', 'GO:0061154 endothelial tube morphogenesis', 'GO:0031507 heterochromatin formation', 'GO:0043537 negative regulation of blood vessel endothelial cell migration', 'GO:0008285 negative regulation of cell population proliferation', 'GO:0032435 negative regulation of proteasomal ubiquitin-dependent protein catabolic process', 'GO:1903901 negative regulation of viral life cycle', 'GO:0032927 positive regulation of activin receptor signaling pathway', 'GO:0045893 positive regulation of DNA-templated transcription', 'GO:0060391 positive regulation of SMAD protein signal transduction', 'GO:0065003 protein-containing complex assembly', 'GO:0007165 signal transduction', 'GO:0075342 symbiont-mediated disruption of host cell PML body'],
+        protein_diseases=['Poirier-Bienvenu neurodevelopmental syndrome'],
+        method="ChEMBL", score=6.39, source_ref="ChEMBL ID: CHEMBL32749"
+    ),
+    slot(
+        uniprot_id="P37840", protein_name="Alpha-synuclein", protein_acronym="SNCA",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Highly expressed in presynaptic terminals in the central nervous system. Expressed principally in brain'],
+        best_structure="AlphaFold:AF-P37840-F1", other_structures=[],
+        go_terms=['GO:0015629 actin cytoskeleton', 'GO:0030424 axon', 'GO:0043679 axon terminus', 'GO:0005938 cell cortex', 'GO:0005737 cytoplasm', 'GO:0005829 cytosol', 'GO:0005576 extracellular region', 'GO:0030426 growth cone', 'GO:0016234 inclusion body', 'GO:0097413 Lewy body', 'GO:0005764 lysosome', 'GO:0016020 membrane', 'GO:0005743 mitochondrial inner membrane', 'GO:0005759 mitochondrial matrix', 'GO:0005741 mitochondrial outer membrane', 'GO:0005739 mitochondrion', 'GO:0043025 neuronal cell body', 'GO:0005640 nuclear outer membrane', 'GO:0005634 nucleus', 'GO:0048471 perinuclear region of cytoplasm', 'GO:0005886 plasma membrane', 'GO:0032991 protein-containing complex', 'GO:0005840 ribosome', 'GO:0099512 supramolecular fiber', 'GO:0045202 synapse', 'GO:0030672 synaptic vesicle membrane', 'GO:0043195 terminal bouton', 'GO:0003779 actin binding', 'GO:0043014 alpha-tubulin binding', 'GO:0048487 beta-tubulin binding', 'GO:0005509 calcium ion binding', 'GO:0005507 copper ion binding', 'GO:1903136 cuprous ion binding', 'GO:0004869 cysteine-type endopeptidase inhibitor activity', 'GO:0070840 dynein complex binding', 'GO:0008047 enzyme activator activity', 'GO:0019899 enzyme binding', 'GO:0004857 enzyme inhibitor activity', 'GO:0008198 ferrous iron binding', 'GO:0042393 histone binding', 'GO:0030544 Hsp70 protein binding', 'GO:0042802 identical protein binding', 'GO:0019894 kinesin binding', 'GO:0008289 lipid binding', 'GO:0000287 magnesium ion binding', 'GO:0008017 microtubule binding', 'GO:0016491 oxidoreductase activity', 'GO:0043274 phospholipase binding', 'GO:0005543 phospholipid binding', 'GO:0051219 phosphoprotein binding', 'GO:0019904 protein domain specific binding', 'GO:0004860 protein kinase inhibitor activity', 'GO:0140311 protein sequestering activity', 'GO:0000149 SNARE binding', 'GO:0048156 tau protein binding', 'GO:0000976 transcription cis-regulatory region binding', 'GO:0141108 transporter regulator activity', 'GO:0015631 tubulin binding', 'GO:0008270 zinc ion binding', 'GO:1990000 amyloid fibril formation', 'GO:0048148 behavioral response to cocaine', 'GO:0071280 cellular response to copper ion', 'GO:0071872 cellular response to epinephrine stimulus', 'GO:0044344 cellular response to fibroblast growth factor stimulus', 'GO:0034599 cellular response to oxidative stress', 'GO:0042416 dopamine biosynthetic process', 'GO:0051583 dopamine uptake involved in synaptic transmission', 'GO:0006749 glutathione metabolic process', 'GO:0001774 microglial cell activation', 'GO:0043066 negative regulation of apoptotic process', 'GO:1904715 negative regulation of chaperone-mediated autophagy', 'GO:0045963 negative regulation of dopamine metabolic process', 'GO:0051585 negative regulation of dopamine uptake involved in synaptic transmission', 'GO:0045920 negative regulation of exocytosis', 'GO:0031115 negative regulation of microtubule polymerization', 'GO:1902957 negative regulation of mitochondrial electron transport, NADH to ubiquinone', 'GO:0043524 negative regulation of neuron apoptotic process', 'GO:0051622 negative regulation of norepinephrine uptake', 'GO:0010642 negative regulation of platelet-derived growth factor receptor signaling pathway', 'GO:0051612 negative regulation of serotonin uptake', 'GO:0070495 negative regulation of thrombin-activated receptor signaling pathway', 'GO:0000122 negative regulation of transcription by RNA polymerase II', 'GO:0043065 positive regulation of apoptotic process', 'GO:0045807 positive regulation of endocytosis', 'GO:0045921 positive regulation of exocytosis', 'GO:1903285 positive regulation of hydrogen peroxide catabolic process', 'GO:0050729 positive regulation of inflammatory response', 'GO:0060732 positive regulation of inositol phosphate biosynthetic process', 'GO:1904377 positive regulation of protein localization to cell periphery', 'GO:0001921 positive regulation of receptor recycling', 'GO:0051281 positive regulation of release of sequestered calcium ion into cytosol', 'GO:0035543 positive regulation of SNARE complex assembly', 'GO:0031648 protein destabilization', 'GO:0051262 protein tetramerization', 'GO:0031623 receptor internalization', 'GO:0014059 regulation of dopamine secretion', 'GO:0070507 regulation of microtubule cytoskeleton organization', 'GO:0051621 regulation of norepinephrine uptake', 'GO:1905606 regulation of presynapse assembly', 'GO:1903426 regulation of reactive oxygen species biosynthetic process', 'GO:1903421 regulation of synaptic vesicle recycling', 'GO:1904307 response to desipramine', 'GO:0070555 response to interleukin-1', 'GO:0010040 response to iron(II) ion', 'GO:0032496 response to lipopolysaccharide', 'GO:0032026 response to magnesium ion', 'GO:0034341 response to type II interferon', 'GO:0035493 SNARE complex assembly', 'GO:0097435 supramolecular fiber organization', 'GO:0050808 synapse organization', 'GO:0001963 synaptic transmission, dopaminergic', 'GO:0048488 synaptic vesicle endocytosis', 'GO:0016079 synaptic vesicle exocytosis', 'GO:0016082 synaptic vesicle priming', 'GO:0048489 synaptic vesicle transport'],
+        protein_diseases=['Parkinson disease 1, autosomal dominant', 'Parkinson disease 4, autosomal dominant', 'Dementia, Lewy body'],
+        method="ChEMBL", score=6.12, source_ref="ChEMBL ID: CHEMBL32749"
+    ),
+    slot(
+        uniprot_id="P00918", protein_name="Carbonic anhydrase 2", protein_acronym="CA2",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-P00918-F1", other_structures=[],
+        go_terms=['GO:0045177 apical part of cell', 'GO:0005737 cytoplasm', 'GO:0005829 cytosol', 'GO:0070062 extracellular exosome', 'GO:0043209 myelin sheath', 'GO:0005886 plasma membrane', 'GO:0004064 arylesterase activity', 'GO:0004089 carbonate dehydratase activity', 'GO:0018820 cyanamide hydratase activity', 'GO:0008270 zinc ion binding', 'GO:0038166 angiotensin-activated signaling pathway', 'GO:2001150 positive regulation of dipeptide transmembrane transport', 'GO:0051453 regulation of intracellular pH', 'GO:0044070 regulation of monoatomic anion transport'],
+        protein_diseases=['Osteopetrosis, autosomal recessive 3'],
+        method="ChEMBL", score=5.62, source_ref="ChEMBL ID: CHEMBL32749"
+    ),
+    slot(
+        uniprot_id="P00915", protein_name="Carbonic anhydrase 1", protein_acronym="CA1",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-P00915-F1", other_structures=[],
+        go_terms=['GO:0005737 cytoplasm', 'GO:0005829 cytosol', 'GO:0070062 extracellular exosome', 'GO:0004064 arylesterase activity', 'GO:0004089 carbonate dehydratase activity', 'GO:0018820 cyanamide hydratase activity', 'GO:0016836 hydro-lyase activity', 'GO:0008270 zinc ion binding', 'GO:0009750 response to fructose'],
+        protein_diseases=[],
+        method="ChEMBL", score=5.54, source_ref="ChEMBL ID: CHEMBL32749"
+    ),
+    slot(
+        uniprot_id="P35218", protein_name="Carbonic anhydrase 5A, mitochondrial", protein_acronym="CA5A",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-P35218-F1", other_structures=[],
+        go_terms=['GO:0005737 cytoplasm', 'GO:0005759 mitochondrial matrix', 'GO:0005739 mitochondrion', 'GO:0004089 carbonate dehydratase activity', 'GO:0008270 zinc ion binding'],
+        protein_diseases=['Hyperammonemia due to carbonic anhydrase VA deficiency'],
+        method="ChEMBL", score=5.15, source_ref="ChEMBL ID: CHEMBL32749"
+    ),
+    slot(
+        uniprot_id="P43166", protein_name="Carbonic anhydrase 7", protein_acronym="CA7",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=[],
+        best_structure="AlphaFold:AF-P43166-F1", other_structures=[],
+        go_terms=['GO:0005737 cytoplasm', 'GO:0005829 cytosol', 'GO:0004089 carbonate dehydratase activity', 'GO:0008270 zinc ion binding'],
+        protein_diseases=[],
+        method="ChEMBL", score=5.13, source_ref="ChEMBL ID: CHEMBL32749"
+    ),
+    slot(
+        uniprot_id="P23280", protein_name="Carbonic anhydrase 6", protein_acronym="CA6",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Major constituent of saliva'],
+        best_structure="AlphaFold:AF-P23280-F1", other_structures=[],
+        go_terms=['GO:0005829 cytosol', 'GO:0070062 extracellular exosome', 'GO:0005576 extracellular region', 'GO:0004089 carbonate dehydratase activity', 'GO:0008270 zinc ion binding', 'GO:0001580 detection of chemical stimulus involved in sensory perception of bitter taste'],
+        protein_diseases=[],
+        method="ChEMBL", score=5.07, source_ref="ChEMBL ID: CHEMBL32749"
+    ),
+    slot(
+        uniprot_id="Q9ULX7", protein_name="Carbonic anhydrase 14", protein_acronym="CA14",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['High expression in all parts of the central nervous system and lower expression in adult liver, heart, small intestine, colon, kidney, urinary bladder and skeletal muscle'],
+        best_structure="AlphaFold:AF-Q9ULX7-F1", other_structures=[],
+        go_terms=['GO:0016324 apical plasma membrane', 'GO:0016323 basolateral plasma membrane', 'GO:0016020 membrane', 'GO:0005886 plasma membrane', 'GO:0004089 carbonate dehydratase activity', 'GO:0008270 zinc ion binding'],
+        protein_diseases=[],
+        method="ChEMBL", score=5.03, source_ref="ChEMBL ID: CHEMBL32749"
+    ),
+    slot(
+        uniprot_id="Q16790", protein_name="Carbonic anhydrase 9", protein_acronym="CA9",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Expressed primarily in carcinoma cells lines. Expression is restricted to very few normal tissues and the most abundant expression is found in the epithelial cells of gastric mucosa'],
+        best_structure="AlphaFold:AF-Q16790-F1", other_structures=[],
+        go_terms=['GO:0016323 basolateral plasma membrane', 'GO:0016020 membrane', 'GO:0031528 microvillus membrane', 'GO:0005730 nucleolus', 'GO:0005886 plasma membrane', 'GO:0004089 carbonate dehydratase activity', 'GO:0140677 molecular function activator activity', 'GO:0008270 zinc ion binding', 'GO:0001666 response to hypoxia', 'GO:0033574 response to testosterone', 'GO:0009410 response to xenobiotic stimulus'],
+        protein_diseases=[],
+        method="ChEMBL", score=5.03, source_ref="ChEMBL ID: CHEMBL32749"
+    ),
+    slot(
+        uniprot_id="O43570", protein_name="Carbonic anhydrase 12", protein_acronym="CA12",
+        species="Homo sapiens", taxon_id=9606,
+        cell_types=['Highly expressed in colon, kidney, prostate, intestine and activated lymphocytes. Expressed at much higher levels in the renal cell cancers than in surrounding normal kidney tissue. Moderately expressed in pancreas, ovary and testis. Expressed in sweat glands and bronchiolar epithelium (PubMed:26911677)'],
+        best_structure="AlphaFold:AF-O43570-F1", other_structures=[],
+        go_terms=['GO:0016324 apical plasma membrane', 'GO:0016323 basolateral plasma membrane', 'GO:0016020 membrane', 'GO:0005886 plasma membrane', 'GO:0004089 carbonate dehydratase activity', 'GO:0008270 zinc ion binding', 'GO:0055064 chloride ion homeostasis', 'GO:0044849 estrous cycle'],
+        protein_diseases=['Hyperchlorhidrosis, isolated'],
+        method="ChEMBL", score=5.01, source_ref="ChEMBL ID: CHEMBL32749"
+    ),
+]
+
+def main():
+    record = dict(CHEMICAL, targets=TARGETS)
+    conn = sqlite3.connect(DB_DEFAULT)
+    conn.execute("PRAGMA foreign_keys=ON")
+    try:
+        conn.execute("SAVEPOINT chem")
+        import_record(conn, record)
+        conn.execute("RELEASE chem")
+        conn.commit()
+        n = sum(1 for t in TARGETS if t["uniprot_id"])
+        print(f"Saved {CHEMICAL['chemical_name']} with {n} target protein(s).")
+    except Exception as e:
+        conn.execute("ROLLBACK TO chem")
+        conn.execute("RELEASE chem")
+        print(f"Nothing saved for {CHEMICAL['chemical_name']}: {e}")
+    finally:
+        conn.close()
+
+if __name__ == "__main__":
+    main()
